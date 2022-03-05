@@ -10,6 +10,7 @@ namespace Blocks
         [SerializeField] private Vector2 spawnOffset;
 
         private SpriteRenderer spriteRenderer;
+        private Animator spriteAnimator;
         private int coinsSpawned;
 
         protected override void Awake()
@@ -17,14 +18,18 @@ namespace Blocks
             base.Awake();
 
             spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+            spriteAnimator = spriteRenderer.GetComponent<Animator>();
         }
 
         [ContextMenu("Trigger")]
         protected override void Trigger()
         {
             if (coinsSpawned >= numberOfCoins - 1)
+            {
+                spriteAnimator.enabled = false;
                 spriteRenderer.sprite = triggeredSprite;
-            
+            }
+
             Instantiate(blockCoinPrefab, transform.position + (Vector3) spawnOffset, Quaternion.identity, transform);
             
             coinsSpawned++;

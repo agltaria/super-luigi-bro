@@ -8,17 +8,20 @@ namespace Blocks
         [SerializeField] private GameObject blockPowerUpPrefab;
 
         private SpriteRenderer spriteRenderer;
+        private Animator spriteAnimator;
 
         protected override void Awake()
         {
             base.Awake();
 
             spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+            spriteAnimator = spriteRenderer.GetComponent<Animator>();
         }
 
         [ContextMenu("Trigger")]
         protected override void Trigger()
         {
+            spriteAnimator.enabled = false;
             spriteRenderer.sprite = triggeredSprite;
             
             Bump();
