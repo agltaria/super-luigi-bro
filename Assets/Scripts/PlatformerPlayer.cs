@@ -10,12 +10,14 @@ public class PlatformerPlayer : PlatformerPhysics
     [SerializeField] float deceleration;
     [SerializeField] float runInfluence = 1.65f;
     [SerializeField] float jumpForce = 4.5f;
+    [SerializeField] float bounceForce = 2.5f;
     [SerializeField] float releasedJumpInfluence = 0.5f;
     [SerializeField] float slowFallInfluence = 0.5f;
     [SerializeField] float jumpSpeedInfluence = 0.30f; // Jump height is multiplied by 1.0 + (this) * (currentSpeed / maxSpeed), so that you jump higher when running
 
     SpriteRenderer spriteRenderer;
     Animator animator;
+    [SerializeField] SpriteRenderer throwSpriteRenderer;
 
     Vector2 trueGravity;
     float velocityX;
@@ -57,6 +59,7 @@ public class PlatformerPlayer : PlatformerPhysics
 
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
+        throwSpriteRenderer.enabled = false;
     }
 
     protected override void Update()
@@ -101,5 +104,10 @@ public class PlatformerPlayer : PlatformerPhysics
         if (jumpDown && !isGrounded) animator.SetBool("inJump", true); else if (isGrounded) animator.SetBool("inJump", false);
         animator.speed = isGrounded ? Mathf.Abs(velocity.x) / maxSpeed * 1.5f : 0.0f;
         if (isGrounded && Mathf.Abs(velocity.x) > 0.1f) spriteRenderer.flipX = (velocity.x < 0.0f);
+    }
+
+    void ThrowAction()
+    {
+        ;
     }
 }
