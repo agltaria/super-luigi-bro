@@ -5,15 +5,14 @@ using UnityEngine;
 public class PlatformerPhysics : MonoBehaviour
 {
     [SerializeField] protected Vector2 gravity = new Vector2(0.0f, -9.8f);
-    [SerializeField] protected float minimumDistance = 0.001f; // Probably need to make all of these fields protected to allow inheritance
+    [SerializeField] protected float minimumDistance = 0.001f;
     [SerializeField] protected float collisionBuffer = 0.01f;
 
-    // protected Vector2 targetVelocity;
     protected Vector2 velocity;
     protected bool isGrounded;
     protected Rigidbody2D rigidbody;
     protected ContactFilter2D contactFilter;
-    protected RaycastHit2D[] hitBuffer = new RaycastHit2D[10];
+    protected RaycastHit2D[] hitBuffer = new RaycastHit2D[10]; // Size is arbitrary, but must be larger than however many objects can be collided with in a single fixed update
 
     // Start is called before the first frame update
     protected virtual void Awake()
@@ -35,7 +34,6 @@ public class PlatformerPhysics : MonoBehaviour
     {
         // Set and reset working variables
         velocity += gravity * Time.deltaTime;
-        // velocity.x = targetVelocity.x;
         isGrounded = false;
         Vector2 deltaPosition = velocity * Time.deltaTime;
 
@@ -61,6 +59,7 @@ public class PlatformerPhysics : MonoBehaviour
             {
                 Vector2 normal = hitBuffer[i].normal;
 
+                // Clamp momentum based on normal of face you have collided with
                 if (isVertical)
                 {
                     if (normal.y > 0.9f) { isGrounded = true; velocity = new Vector2(velocity.x, Mathf.Max(0.0f, velocity.y)); }
@@ -72,16 +71,18 @@ public class PlatformerPhysics : MonoBehaviour
                     else if (normal.x < -0.9f) velocity = new Vector2(Mathf.Min(0.0f, velocity.x), velocity.y);
                 }
 
+                // Subtract distance you would clip into object from velocity
                 float projection = Vector2.Dot(velocity, normal);
                 if (projection > 0.0f) velocity -= projection * normal;
 
+                // Move whichever calculated distance is more conservative
                 float modifiedDistance = hitBuffer[i].distance - collisionBuffer;
                 if (distance > modifiedDistance) distance = modifiedDistance;
             }
         }
 
+        // Apply calculated physics
         rigidbody.position += move.normalized * distance;
-        // if (isGrounded) velocity = Vector2.right * velocity.x;
     }
 
     protected virtual void SetTargetVelocity()

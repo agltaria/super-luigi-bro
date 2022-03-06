@@ -36,8 +36,6 @@ public class PlatformerPlayer : PlatformerPhysics
             jumpDown = true;
             velocity = new Vector2(velocity.x, jumpForce * (1.0f + (jumpSpeedInfluence * (Mathf.Abs(velocity.x) / (maxSpeed * runInfluence)))));
             gravity *= slowFallInfluence;
-            //animator.SetTrigger("jumped");
-            //animator.SetBool("inJump", true);
         }
         else if (value.Get<float>() < 0.1f)
         {
@@ -93,16 +91,15 @@ public class PlatformerPlayer : PlatformerPhysics
             }
         }
 
-        //// targetVelocity = Vector2.right * velocityX;
         velocity = new Vector2(velocityX, velocity.y);
 
         // Visual code
         animator.SetBool("isGrounded",  isGrounded);
-        animator.SetBool("isTurning", (moveInput.x * velocity.x < 0 && Mathf.Abs(velocity.x) > 2.0f));
+        if (!animator.GetBool("isTurning")) animator.SetBool("isTurning", moveInput.x * velocity.x < 0 && Mathf.Abs(velocity.x) > 2.0f);
+        else animator.SetBool("isTurning", moveInput.x * velocity.x < 0);
         animator.SetBool("isMoving", Mathf.Abs(moveInput.x) > 0.1f || Mathf.Abs(velocity.x) > 0.1f);
-        if (jumpDown) animator.SetBool("inJump", true); else if (isGrounded) animator.SetBool("inJump", false);
+        if (jumpDown && !isGrounded) animator.SetBool("inJump", true); else if (isGrounded) animator.SetBool("inJump", false);
         animator.speed = isGrounded ? Mathf.Abs(velocity.x) / maxSpeed * 1.5f : 0.0f;
         if (isGrounded && Mathf.Abs(velocity.x) > 0.1f) spriteRenderer.flipX = (velocity.x < 0.0f);
-        if (isGrounded && animator.GetBool("isTurning") && animator.GetBool("isMoving")) spriteRenderer.flipX = !spriteRenderer.flipX;
     }
 }

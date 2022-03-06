@@ -9284,7 +9284,7 @@ MonoBehaviour:
   maxSpeed: 7
   acceleration: 12
   deceleration: 12
-  runInfluence: 1.65
+  runInfluence: 1.75
   jumpForce: 16
   releasedJumpInfluence: 0.6
   slowFallInfluence: 0.5
