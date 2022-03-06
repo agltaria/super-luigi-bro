@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace DefaultNamespace
@@ -6,6 +7,8 @@ namespace DefaultNamespace
     public class CoinManager : MonoBehaviour
     {
         [SerializeField] private int coinsForOneUp;
+
+        public static CoinManager Instance;
 
         public int Coins
         {
@@ -19,6 +22,19 @@ namespace DefaultNamespace
 
         public UnityEvent coinsChanged = new UnityEvent();
         private int _coins;
+
+        private void Awake()
+        {
+            if (Instance == null)
+            {
+                Instance = this;
+            }
+            else
+            {
+                Debug.LogWarning($"More than one {nameof(CoinManager)}.");
+                enabled = false;
+            }
+        }
 
         private void Start()
         {

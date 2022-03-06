@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using DefaultNamespace;
+using UnityEngine;
 
 namespace Blocks
 {
@@ -12,6 +13,7 @@ namespace Blocks
         private SpriteRenderer spriteRenderer;
         private Animator spriteAnimator;
         private int coinsSpawned;
+        private CoinManager coinManager;
 
         protected override void Awake()
         {
@@ -19,6 +21,13 @@ namespace Blocks
 
             spriteRenderer = GetComponentInChildren<SpriteRenderer>();
             spriteAnimator = spriteRenderer.GetComponent<Animator>();
+        }
+
+        protected override void Start()
+        {
+            base.Start();
+            
+            coinManager = CoinManager.Instance;
         }
 
         [ContextMenu("Trigger")]
@@ -41,7 +50,7 @@ namespace Blocks
         {
             base.OnBumpComplete();
             
-            // TODO: Update coin count
+            coinManager.AddCoin();
             
             if (coinsSpawned >= numberOfCoins)
                 enabled = false;

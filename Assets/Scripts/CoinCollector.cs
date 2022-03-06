@@ -3,8 +3,13 @@ using UnityEngine;
 
 public class CoinCollector : MonoBehaviour
 {
-    [SerializeField] private CoinManager coinManager;
-    
+    private CoinManager coinManager;
+
+    private void Start()
+    {
+        coinManager = CoinManager.Instance;
+    }
+
     private void OnTriggerEnter2D(Collider2D col)
     {
         if (!col.CompareTag("Coin")) return;
