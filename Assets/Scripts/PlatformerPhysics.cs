@@ -4,19 +4,18 @@ using UnityEngine;
 
 public class PlatformerPhysics : MonoBehaviour
 {
-    [SerializeField] Vector2 gravity = new Vector2(0.0f, -9.8f);
-    [SerializeField] float minimumDistance = 0.001f; // Probably need to make all of these fields protected to allow inheritance
-    [SerializeField] float collisionBuffer = 0.01f;
+    [SerializeField] protected Vector2 gravity = new Vector2(0.0f, -9.8f);
+    [SerializeField] protected float minimumDistance = 0.001f;
+    [SerializeField] protected float collisionBuffer = 0.01f;
 
-    Vector2 targetVelocity;
-    Vector2 velocity;
-    bool isGrounded;
-    Rigidbody2D rigidbody;
-    ContactFilter2D contactFilter;
-    RaycastHit2D[] hitBuffer = new RaycastHit2D[10];
+    protected Vector2 velocity;
+    protected bool isGrounded;
+    protected Rigidbody2D rigidbody;
+    protected ContactFilter2D contactFilter;
+    protected RaycastHit2D[] hitBuffer = new RaycastHit2D[10]; // Size is arbitrary, but must be larger than however many objects can be collided with in a single fixed update
 
     // Start is called before the first frame update
-    void Awake()
+    protected virtual void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
         contactFilter.useTriggers = false;
@@ -25,9 +24,9 @@ public class PlatformerPhysics : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
-        targetVelocity = new Vector2();
+        // targetVelocity = new Vector2();
         SetTargetVelocity();
     }
 
@@ -35,15 +34,20 @@ public class PlatformerPhysics : MonoBehaviour
     {
         // Set and reset working variables
         velocity += gravity * Time.deltaTime;
-        velocity.x = targetVelocity.x;
         isGrounded = false;
         Vector2 deltaPosition = velocity * Time.deltaTime;
 
         // Make movement
-        Move(deltaPosition);
+        if (deltaPosition != null)
+        {
+            // Horizontal
+            Move(Vector2.right * deltaPosition.x, false, true);
+            // Vertical
+            Move(Vector2.up * deltaPosition.y, true, false);
+        }
     }
 
-    void Move(Vector2 move)
+    void Move(Vector2 move, bool isVertical, bool isHorizontal)
     {
         float distance = move.magnitude;
 
@@ -54,18 +58,31 @@ public class PlatformerPhysics : MonoBehaviour
             for (int i = 0; i < count; i++)
             {
                 Vector2 normal = hitBuffer[i].normal;
-                if (normal.y > 0.9f) isGrounded = true;
 
+                // Clamp momentum based on normal of face you have collided with
+                if (isVertical)
+                {
+                    if (normal.y > 0.9f) { isGrounded = true; velocity = new Vector2(velocity.x, Mathf.Max(0.0f, velocity.y)); }
+                    else if (normal.y < -0.9f) velocity = new Vector2(velocity.x, Mathf.Min(0.0f, velocity.y));
+                }
+                else if (isHorizontal)
+                {
+                    if (normal.x > 0.9f) velocity = new Vector2(Mathf.Max(0.0f, velocity.x), velocity.y);
+                    else if (normal.x < -0.9f) velocity = new Vector2(Mathf.Min(0.0f, velocity.x), velocity.y);
+                }
+
+                // Subtract distance you would clip into object from velocity
                 float projection = Vector2.Dot(velocity, normal);
                 if (projection > 0.0f) velocity -= projection * normal;
 
+                // Move whichever calculated distance is more conservative
                 float modifiedDistance = hitBuffer[i].distance - collisionBuffer;
                 if (distance > modifiedDistance) distance = modifiedDistance;
             }
         }
 
+        // Apply calculated physics
         rigidbody.position += move.normalized * distance;
-        if (isGrounded) velocity = Vector2.right * velocity.x;
     }
 
     protected virtual void SetTargetVelocity()
