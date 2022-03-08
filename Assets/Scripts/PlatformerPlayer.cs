@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor.Animations;
 using UnityEngine.InputSystem;
 
 public class PlatformerPlayer : PlatformerPhysics
@@ -24,6 +25,18 @@ public class PlatformerPlayer : PlatformerPhysics
     Animator animator;
     [SerializeField] SpriteRenderer throwSpriteRenderer;
     [SerializeField] SpriteMask spriteMask;
+
+    [SerializeField] AnimatorController[] animators; // small, big, fire, star?
+    [SerializeField] Sprite[] powerUpMushroomSprites;
+    [SerializeField] Sprite[] powerUpFlowerSprites;
+    float powerUpTimer;
+    int powerUpStage;
+
+    Vector2 bigMarioColliderScale = new Vector2(0.75f, 1.4375f);
+    Vector2 bigMarioColliderOffset = new Vector2(0.0f, -0.21885f);
+    Vector2 smallMarioColliderScale = new Vector2(0.63f, 0.6875f);
+    Vector2 smallMarioColliderOffset = new Vector2(0.0f, -0.594f);
+    BoxCollider2D collider;
 
     Vector2 trueGravity;
     float velocityX;
@@ -79,6 +92,7 @@ public class PlatformerPlayer : PlatformerPhysics
         trueGravity = gravity;
         currentMaxSpeed = maxSpeed;
 
+        collider = GetComponent<BoxCollider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         throwSpriteRenderer.enabled = false;
@@ -104,6 +118,57 @@ public class PlatformerPlayer : PlatformerPhysics
                 spriteMask.enabled = false;
                 throwSpriteRenderer.enabled = false;
                 throwCoolDown = 0.0f;
+            }
+        }
+
+        // Animate power-up
+        if (powerUpStage >= 0)
+        {
+            powerUpTimer += Time.unscaledDeltaTime;
+            powerUpStage += Mathf.FloorToInt(powerUpTimer / 0.1f);
+            powerUpTimer %= 0.1f;
+            if (currentForm == MarioForm.Big)
+            {
+                // Update sprite for mushroom transistion
+                switch (powerUpStage)
+                {
+                    case 0:
+                    case 2:
+                    case 4:
+                    case 7:
+                    case 10:
+                        spriteRenderer.sprite = powerUpMushroomSprites[0];
+                        break;
+                    case 1:
+                    case 3:
+                    case 5:
+                    case 8:
+                        spriteRenderer.sprite = powerUpMushroomSprites[1];
+                        break;
+                    case 6:
+                    case 9:
+                        spriteRenderer.sprite = powerUpMushroomSprites[2];
+                        break;
+                    default:
+                        powerUpStage = -1;
+                        powerUpTimer = 0.0f;
+                        Time.timeScale = 1.0f;
+                        animator.enabled = true;
+                        break;
+                }
+            }
+            else if (currentForm == MarioForm.Fire)
+            {
+                // Update sprite for flower transistion
+                switch (powerUpStage)
+                {
+                    default:
+                        powerUpStage = -1;
+                        powerUpTimer = 0.0f;
+                        Time.timeScale = 1.0f;
+                        break;
+                }
+
             }
         }
     }
@@ -185,5 +250,66 @@ public class PlatformerPlayer : PlatformerPhysics
         //{
         //    // Hurt Mario
         //}
+
+
+    }
+
+    public void GetPowerUp(int powerUpType) // Types are as follows: 0 mushroom, 1 fire flower, 2 star, 3 one-up mushroom
+    {
+        switch (powerUpType)
+        {
+            case 0: // Mushroom
+                if (((int)currentForm) == 0)
+                {
+                    // Power up to big form
+                    Time.timeScale = 0.0f;
+                    currentForm = MarioForm.Big;
+                    powerUpStage = 0;
+                    powerUpTimer = 0.0f;
+                    animator.runtimeAnimatorController = animators[1];
+                    animator.enabled = false;
+                    collider.offset = bigMarioColliderOffset;
+                    collider.size = bigMarioColliderScale;
+                }
+                else
+                {
+                    // Increase score
+                }
+                break;
+            case 1: // Fire Flower
+                if (((int)currentForm) <= 1)
+                {
+                    // Power up to fire form
+                    Time.timeScale = 0.0f;
+                    currentForm = MarioForm.Fire;
+                    powerUpStage = 0;
+                    powerUpTimer = 0.0f;
+                    animator.enabled = false;
+                }
+                else
+                {
+                    // Increase score
+                }
+                break;
+            case 2: // Star man
+                break;
+            case 3: // One-Up mushroom
+                // Increment lives
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        PowerUpInfo powerUp = collision.gameObject.GetComponent<PowerUpInfo>();
+        if (powerUp != null)
+        {
+            GetPowerUp((int)powerUp.powerUpType);
+            Destroy(powerUp.gameObject);
+            Debug.Log("Collected power of type " + (int)powerUp.powerUpType);
+        }
+
     }
 }
