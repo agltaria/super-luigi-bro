@@ -26,7 +26,6 @@ public class PlatformerPhysics : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-        // targetVelocity = new Vector2();
         SetTargetVelocity();
     }
 
@@ -62,13 +61,13 @@ public class PlatformerPhysics : MonoBehaviour
                 // Clamp momentum based on normal of face you have collided with
                 if (isVertical)
                 {
-                    if (normal.y > 0.9f) { isGrounded = true; velocity = new Vector2(velocity.x, Mathf.Max(0.0f, velocity.y)); }
-                    else if (normal.y < -0.9f) velocity = new Vector2(velocity.x, Mathf.Min(0.0f, velocity.y));
+                    if (normal.y > 0.9f) HitWall(0);
+                    else if (normal.y < -0.9f) HitWall(1);
                 }
                 else if (isHorizontal)
                 {
-                    if (normal.x > 0.9f) velocity = new Vector2(Mathf.Max(0.0f, velocity.x), velocity.y);
-                    else if (normal.x < -0.9f) velocity = new Vector2(Mathf.Min(0.0f, velocity.x), velocity.y);
+                    if (normal.x > 0.9f) HitWall(2);
+                    else if (normal.x < -0.9f) HitWall(3);
                 }
 
                 // Subtract distance you would clip into object from velocity
@@ -85,8 +84,30 @@ public class PlatformerPhysics : MonoBehaviour
         rigidbody.position += move.normalized * distance;
     }
 
-    protected virtual void SetTargetVelocity()
+    protected virtual void SetTargetVelocity() // This functions exists so that child classes can modify velocity every frame, as necessary
     {
 
+    }
+
+    protected virtual void HitWall(int direction) // This functions exists so that additional behaviour can be added by child classes. Directions (of normal) are as follows: 0 up, 1 down, 2 right, 3 left 
+    {
+        switch (direction)
+        {
+            case 0:
+                isGrounded = true;
+                velocity = new Vector2(velocity.x, Mathf.Max(0.0f, velocity.y));    
+                break;
+            case 1:
+                velocity = new Vector2(velocity.x, Mathf.Min(0.0f, velocity.y));
+                break;
+            case 2:
+                velocity = new Vector2(Mathf.Max(0.0f, velocity.x), velocity.y);
+                break;
+            case 3:
+                velocity = new Vector2(Mathf.Min(0.0f, velocity.x), velocity.y);
+                break;
+            default:
+                break;
+        }
     }
 }
