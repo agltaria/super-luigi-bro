@@ -10,6 +10,10 @@ public class PlatformerPlayer : PlatformerPhysics
     public MarioForm currentForm;
     public int fireBalls = 2;
     [SerializeField] GameObject fireBall;
+    bool isInvincible; // Star man
+    float invincibilityTimer;
+    bool isVulnerable; // I-Frames after being hurt
+    float vulnerabilityTimer;
 
     [SerializeField] float maxSpeed;
     [SerializeField] float acceleration;
@@ -127,7 +131,38 @@ public class PlatformerPlayer : PlatformerPhysics
             powerUpTimer += Time.unscaledDeltaTime;
             powerUpStage += Mathf.FloorToInt(powerUpTimer / 0.1f);
             powerUpTimer %= 0.1f;
-            if (currentForm == MarioForm.Big)
+            if (currentForm == MarioForm.Small)
+            {
+                // Update sprite for mushroom transistion
+                switch (powerUpStage)
+                {
+                    case 0:
+                    case 2:
+                    case 4:
+                    case 7:
+                    case 10:
+                        spriteRenderer.sprite = powerUpMushroomSprites[2];
+                        break;
+                    case 1:
+                    case 3:
+                    case 5:
+                    case 8:
+                        spriteRenderer.sprite = powerUpMushroomSprites[1];
+                        break;
+                    case 6:
+                    case 9:
+                        spriteRenderer.sprite = powerUpMushroomSprites[0];
+                        break;
+                    default:
+                        powerUpStage = -1;
+                        powerUpTimer = 0.0f;
+                        Time.timeScale = 1.0f;
+                        animator.enabled = true;
+                        spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f, 1.0f)
+                        break;
+                }
+            }
+            else if (currentForm == MarioForm.Big)
             {
                 // Update sprite for mushroom transistion
                 switch (powerUpStage)
@@ -162,14 +197,34 @@ public class PlatformerPlayer : PlatformerPhysics
                 // Update sprite for flower transistion
                 switch (powerUpStage)
                 {
+                    case 0:
+                    case 2:
+                    case 4:
+                    case 7:
+                    case 10:
+                        spriteRenderer.sprite = powerUpFlowerSprites[0];
+                        break;
+                    case 1:
+                    case 3:
+                    case 5:
+                    case 8:
+                        spriteRenderer.sprite = powerUpFlowerSprites[1];
+                        break;
+                    case 6:
+                    case 9:
+                        spriteRenderer.sprite = powerUpFlowerSprites[2];
+                        break;
                     default:
                         powerUpStage = -1;
                         powerUpTimer = 0.0f;
                         Time.timeScale = 1.0f;
+                        animator.enabled = true;
                         break;
                 }
 
             }
+
+            //
         }
     }
 
@@ -249,9 +304,16 @@ public class PlatformerPlayer : PlatformerPhysics
         //else if (enemy != null)
         //{
         //    // Hurt Mario
+        //    Time.timeScale = 0.0f;
+        //    currentForm = MarioForm.Small;
+        //    powerUpStage = 0;
+        //    powerUpTimer = 0.0f;
+        //    animator.runtimeAnimatorController = animators[0];
+        //    animator.enabled = false;
+        //    collider.offset = smallMarioColliderOffset;
+        //    collider.size = smallMarioColliderScale;
+        //    spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
         //}
-
-
     }
 
     public void GetPowerUp(int powerUpType) // Types are as follows: 0 mushroom, 1 fire flower, 2 star, 3 one-up mushroom
@@ -284,7 +346,10 @@ public class PlatformerPlayer : PlatformerPhysics
                     currentForm = MarioForm.Fire;
                     powerUpStage = 0;
                     powerUpTimer = 0.0f;
+                    animator.runtimeAnimatorController = animators[2];
                     animator.enabled = false;
+                    collider.offset = bigMarioColliderOffset;
+                    collider.size = bigMarioColliderScale;
                 }
                 else
                 {
@@ -292,6 +357,8 @@ public class PlatformerPlayer : PlatformerPhysics
                 }
                 break;
             case 2: // Star man
+                // Make call to music player to play invincibility music
+
                 break;
             case 3: // One-Up mushroom
                 // Increment lives
