@@ -26,11 +26,10 @@ public class PlatformerPhysics : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-        // targetVelocity = new Vector2();
         SetTargetVelocity();
     }
 
-    void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         // Set and reset working variables
         velocity += gravity * Time.deltaTime;
@@ -47,7 +46,7 @@ public class PlatformerPhysics : MonoBehaviour
         }
     }
 
-    void Move(Vector2 move, bool isVertical, bool isHorizontal)
+    protected virtual void Move(Vector2 move, bool isVertical, bool isHorizontal)
     {
         float distance = move.magnitude;
 
@@ -57,27 +56,30 @@ public class PlatformerPhysics : MonoBehaviour
 
             for (int i = 0; i < count; i++)
             {
-                Vector2 normal = hitBuffer[i].normal;
-
                 // Clamp momentum based on normal of face you have collided with
                 if (isVertical)
                 {
-                    if (normal.y > 0.9f) { isGrounded = true; velocity = new Vector2(velocity.x, Mathf.Max(0.0f, velocity.y)); }
-                    else if (normal.y < -0.9f) velocity = new Vector2(velocity.x, Mathf.Min(0.0f, velocity.y));
+                    if (hitBuffer[i].normal.y > 0.9f) HitWall(0, hitBuffer[i]);
+                    else if (hitBuffer[i].normal.y < -0.9f) HitWall(1, hitBuffer[i]);
                 }
                 else if (isHorizontal)
                 {
-                    if (normal.x > 0.9f) velocity = new Vector2(Mathf.Max(0.0f, velocity.x), velocity.y);
-                    else if (normal.x < -0.9f) velocity = new Vector2(Mathf.Min(0.0f, velocity.x), velocity.y);
+                    if (hitBuffer[i].normal.x > 0.9f) HitWall(2, hitBuffer[i]);
+                    else if (hitBuffer[i].normal.x < -0.9f) HitWall(3, hitBuffer[i]);
                 }
 
-                // Subtract distance you would clip into object from velocity
-                float projection = Vector2.Dot(velocity, normal);
-                if (projection > 0.0f) velocity -= projection * normal;
+                Vector2 normal = hitBuffer[i].normal;
 
-                // Move whichever calculated distance is more conservative
-                float modifiedDistance = hitBuffer[i].distance - collisionBuffer;
-                if (distance > modifiedDistance) distance = modifiedDistance;
+                if (hitBuffer[i].collider.gameObject.tag == "Untagged")
+                {
+                    // Subtract distance you would clip into object from velocity
+                    float projection = Vector2.Dot(velocity, normal);
+                    if (projection > 0.0f) velocity -= projection * normal;
+
+                    // Use whichever calculated distance is more conservative
+                    float modifiedDistance = hitBuffer[i].distance - collisionBuffer;
+                    if (distance > modifiedDistance) distance = modifiedDistance;
+                }
             }
         }
 
@@ -85,8 +87,34 @@ public class PlatformerPhysics : MonoBehaviour
         rigidbody.position += move.normalized * distance;
     }
 
-    protected virtual void SetTargetVelocity()
+    protected virtual void SetTargetVelocity() // This functions exists so that child classes can modify velocity every frame, as necessary
     {
 
+    }
+
+    protected virtual void HitWall(int direction, RaycastHit2D hit) // This functions exists so that additional behaviour can be added by child classes. Directions (of normal) are as follows: 0 up, 1 down, 2 right, 3 left 
+    {
+        // Cull momentum (and ground, if neccesary) based on normal
+        if (hit.collider.gameObject.tag == "Untagged") 
+        {
+            switch (direction)
+            {
+                case 0:
+                    isGrounded = true;
+                    velocity = new Vector2(velocity.x, Mathf.Max(0.0f, velocity.y));
+                    break;
+                case 1:
+                    velocity = new Vector2(velocity.x, Mathf.Min(0.0f, velocity.y));
+                    break;
+                case 2:
+                    velocity = new Vector2(Mathf.Max(0.0f, velocity.x), velocity.y);
+                    break;
+                case 3:
+                    velocity = new Vector2(Mathf.Min(0.0f, velocity.x), velocity.y);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }

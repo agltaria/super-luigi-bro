@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 1020008543236761030}
   - component: {fileID: 6794906162367733436}
   - component: {fileID: 6388218658023910315}
-  - component: {fileID: -4042524749403907500}
+  - component: {fileID: 7654914485785193324}
   m_Layer: 2
-  m_Name: One Up
-  m_TagString: Untagged
+  m_Name: Mushroom
+  m_TagString: PowerUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 686919684, guid: 8f109ef84926d814bb557a23a366e6dc, type: 3}
+  m_Sprite: {fileID: 1364771079, guid: 8f109ef84926d814bb557a23a366e6dc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -152,7 +152,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &-4042524749403907500
+--- !u!114 &7654914485785193324
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -164,4 +164,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2045ab9524d078b41be33bedefa30b56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerUpType: 3
+  powerUpType: 0

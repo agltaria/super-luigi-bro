@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6025933937817098460}
   - component: {fileID: 273590961449739174}
   - component: {fileID: 369336560312325809}
+  - component: {fileID: 3049277825654248552}
   m_Layer: 2
   m_Name: Star Power
   m_TagString: Untagged
@@ -75,7 +76,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_Sprite: {fileID: 461544139, guid: 8f109ef84926d814bb557a23a366e6dc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -151,3 +152,16 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &3049277825654248552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4904579126602855770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2045ab9524d078b41be33bedefa30b56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerUpType: 2
