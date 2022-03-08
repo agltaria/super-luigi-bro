@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -311,5 +312,13 @@ public class PlatformerPlayer : PlatformerPhysics
             Debug.Log("Collected power of type " + (int)powerUp.powerUpType);
         }
 
+    }
+
+    private void OnDisable()
+    {
+        animator.SetBool("isGrounded",  false);
+        animator.SetBool("isTurning", false);
+        animator.SetBool("isMoving", false);
+        animator.SetBool("inJump", false);
     }
 }

@@ -6,6 +6,10 @@ namespace DefaultNamespace
     {
         private void OnTriggerEnter2D(Collider2D col)
         {
+            if (!col.CompareTag("Player")) return;
+            
+            Destroy(col.gameObject);
+            
             // TODO: Disable player input
             // TODO: Hide player sprite
             // TODO: Start converting time to score
