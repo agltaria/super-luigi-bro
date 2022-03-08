@@ -1,64 +1,63 @@
 ﻿using System;
-using System.Collections;
-using UnityEditor;
 using UnityEngine;
+using UnityEditor.Animations;
 
 namespace DefaultNamespace
 {
     public class FlagpoleController : MonoBehaviour
     {
         [SerializeField] private Transform flag;
-        [SerializeField] private BoxCollider2D flagpoleCollider;
-        [SerializeField] private BoxCollider2D castleDoorCollider;
         [SerializeField] private float minYPos;
-        [SerializeField] private float jumpDelay;
-        [SerializeField] private float animatorSpeed;
-
+        [SerializeField] private AnimatorController smallMarioAnimatorController;
+        [SerializeField] private AnimatorController bigMarioAnimatorController;
+        [SerializeField] private AnimatorController fireMarioAnimatorController;
         [SerializeField] private float slideSpeed;
+        [SerializeField] private Timer timer;
 
-        private Transform player;
+        private Transform playerTransform;
         private PlatformerPlayer playerMovement;
         private Animator playerAnimator;
-        private SpriteRenderer playerSprite;
 
         private bool playerSliding;
         private bool flagSliding;
-        private bool playerMoving;
-        private static readonly int FlagpoleSlide = Animator.StringToHash("flagpoleSlide");
+        
         private static readonly int FlagpoleJump = Animator.StringToHash("flagpoleJump");
-        private static readonly int InJump = Animator.StringToHash("inJump");
-        private static readonly int IsGrounded = Animator.StringToHash("isGrounded");
-        private static readonly int IsMoving = Animator.StringToHash("isMoving");
 
         private void Update()
         {
-            Slide(player, ref playerSliding, () => { });
-            Slide(flag, ref flagSliding, () => OnFlagSlideComplete());
-
-            if (!playerMoving) return;
-
-            player.position += Vector3.right * slideSpeed * Time.deltaTime;
+            Slide(playerTransform, ref playerSliding, () => { });
+            Slide(flag, ref flagSliding, OnFlagSlideComplete);
         }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (!other.CompareTag("Player")) return;
 
-            player = other.transform;
-            
+            playerTransform = other.transform;
             playerMovement = other.GetComponent<PlatformerPlayer>();
-            playerSprite = other.GetComponent<SpriteRenderer>();
+            playerAnimator = other.GetComponent<Animator>();
 
             playerMovement.enabled = false;
 
-            playerAnimator = other.GetComponent<Animator>();
+            switch (playerMovement.currentForm)
+            {
+                case PlatformerPlayer.MarioForm.Small:
+                    playerAnimator.runtimeAnimatorController = smallMarioAnimatorController;
+                    break;
+                case PlatformerPlayer.MarioForm.Big:
+                    playerAnimator.runtimeAnimatorController = bigMarioAnimatorController;
+                    break;
+                case PlatformerPlayer.MarioForm.Fire:
+                    playerAnimator.runtimeAnimatorController = fireMarioAnimatorController;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
             
-            playerAnimator.SetTrigger(FlagpoleSlide);
-
-            // TODO: Disable player input
-            // TODO: Disable player physics
-            // TODO: Stop timer
-            // TODO: Set player sprite to grab
+            playerAnimator.applyRootMotion = true;
+            playerAnimator.speed = 1;
+            
+            timer.StopTimer();
 
             playerSliding = true;
             flagSliding = true;
@@ -83,36 +82,7 @@ namespace DefaultNamespace
 
         private void OnFlagSlideComplete()
         {
-            // playerSliding = false;
-            //
             playerAnimator.SetTrigger(FlagpoleJump);
-            //
-            // playerSprite.flipX = true;
-            //
-            // yield return new WaitForSeconds(jumpDelay);
-            //
-            // // playerMovement.enabled = true;
-            //
-            // playerAnimator.SetBool(InJump, true);
-            //
-            // playerMoving = true;
-            //
-            // yield return new WaitForSeconds(jumpDelay);
-            //
-            // playerSprite.flipX = false;
-            //
-            // playerAnimator.SetBool(InJump, false);
-            // playerAnimator.SetBool(IsGrounded, true);
-            // playerAnimator.SetBool(IsMoving, true);
-            //
-            // playerAnimator.speed = animatorSpeed;
-
-            // TODO: Flip player sprite
-            // TODO: Small delay
-
-
-            // TODO: Backward jump off flagpole
-            // TODO: Start player walking right
         }
     }
 }

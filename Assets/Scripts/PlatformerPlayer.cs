@@ -311,14 +311,5 @@ public class PlatformerPlayer : PlatformerPhysics
             Destroy(powerUp.gameObject);
             Debug.Log("Collected power of type " + (int)powerUp.powerUpType);
         }
-
-    }
-
-    private void OnDisable()
-    {
-        animator.SetBool("isGrounded",  false);
-        animator.SetBool("isTurning", false);
-        animator.SetBool("isMoving", false);
-        animator.SetBool("inJump", false);
     }
 }
