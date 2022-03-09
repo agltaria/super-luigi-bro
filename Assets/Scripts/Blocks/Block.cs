@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace Blocks
 {
@@ -17,7 +17,25 @@ namespace Blocks
 
         protected virtual void Start() { }
 
-        public virtual void Trigger() { }
+        public virtual void Trigger()
+        {
+            // Check for enemies above the block
+            var hit = Physics2D.Raycast(transform.position + Vector3.up, Vector2.up);
+
+            if (!hit) return;
+
+            if (!hit.collider.CompareTag("Enemy")) return;
+
+            var enemy = hit.collider.GetComponent<PlatformerEnemy>();
+
+            if (enemy == null)
+            {
+                Debug.LogWarning($"{nameof(GameObject)} with \"Enemy\" tag doesn't have {nameof(PlatformerEnemy)} script." );
+                return;
+            }
+ 
+            enemy.OnDeath(false, 1);
+        }
 
         protected void Bump()
         {

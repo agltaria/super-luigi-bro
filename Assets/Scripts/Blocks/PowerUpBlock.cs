@@ -26,6 +26,8 @@ namespace Blocks
         {
             if (Triggered) return;
             
+            base.Trigger();
+            
             spriteAnimator.enabled = false;
             spriteRenderer.sprite = triggeredSprite;
             

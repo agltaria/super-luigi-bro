@@ -35,6 +35,8 @@ namespace Blocks
         {
             if (Triggered) return;
             
+            base.Trigger();
+            
             if (coinsSpawned >= numberOfCoins - 1)
             {
                 spriteAnimator.enabled = false;
