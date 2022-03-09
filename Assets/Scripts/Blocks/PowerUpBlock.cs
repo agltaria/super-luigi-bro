@@ -6,9 +6,6 @@ namespace Blocks
     {
         [SerializeField] private Sprite triggeredSprite;
         [SerializeField] private GameObject blockPowerUpPrefab;
-        [SerializeField] private GameObject powerUpPrefab;
-        [SerializeField] private bool isProgressive;
-        [SerializeField] private GameObject progressivePowerUpPrefab;
 
         private SpriteRenderer spriteRenderer;
         private Animator spriteAnimator;
@@ -22,7 +19,7 @@ namespace Blocks
         }
 
         [ContextMenu("Trigger")]
-        public override void Trigger()
+        protected override void Trigger()
         {
             spriteAnimator.enabled = false;
             spriteRenderer.sprite = triggeredSprite;
@@ -34,12 +31,7 @@ namespace Blocks
         {
             base.OnBumpComplete();
 
-            var blockPowerUp = Instantiate(blockPowerUpPrefab, transform);
-                
-            if (isProgressive && PlatformerPlayer.CurrentForm != PlatformerPlayer.MarioForm.Small)
-                blockPowerUp.GetComponent<BlockPowerUp>().powerUpPrefab = progressivePowerUpPrefab;
-            else
-                blockPowerUp.GetComponent<BlockPowerUp>().powerUpPrefab = powerUpPrefab;
+            Instantiate(blockPowerUpPrefab, transform);
 
             enabled = false;
         }

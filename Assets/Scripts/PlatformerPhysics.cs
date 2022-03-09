@@ -7,6 +7,7 @@ public class PlatformerPhysics : MonoBehaviour
     [SerializeField] protected Vector2 gravity = new Vector2(0.0f, -9.8f);
     [SerializeField] protected float minimumDistance = 0.001f;
     [SerializeField] protected float collisionBuffer = 0.01f;
+    [SerializeField] protected bool isBoundByCamera = false;
 
     protected Vector2 velocity;
     protected bool isGrounded;
@@ -70,7 +71,7 @@ public class PlatformerPhysics : MonoBehaviour
 
             Vector2 normal = hitBuffer[i].normal;
 
-            if (hitBuffer[i].collider.gameObject.tag == "Untagged" || hitBuffer[i].collider.gameObject.tag == gameObject.tag)
+            if (hitBuffer[i].collider.gameObject.tag == "Untagged" || hitBuffer[i].collider.gameObject.tag == gameObject.tag || ((isBoundByCamera && hitBuffer[i].collider.gameObject.tag == "MainCamera")))
             {
                 // Subtract distance you would clip into object from velocity
                 float projection = Vector2.Dot(velocity, normal);
@@ -95,7 +96,7 @@ public class PlatformerPhysics : MonoBehaviour
     protected virtual void HitWall(int direction, RaycastHit2D hit) // This functions exists so that additional behaviour can be added by child classes. Directions (of normal) are as follows: 0 up, 1 down, 2 right, 3 left 
     {
         // Cull momentum (and ground, if neccesary) based on normal
-        if (hit.collider.gameObject.tag == "Untagged")
+        if (hit.collider.gameObject.tag == "Untagged" || (isBoundByCamera && hit.collider.gameObject.tag == "MainCamera"))
         {
             switch (direction)
             {

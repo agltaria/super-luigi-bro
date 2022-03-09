@@ -61,6 +61,7 @@ SpriteAtlas:
   - {fileID: 2001671159, guid: 08b475cae1dc8ff48939fe86c9bed3b7, type: 3}
   - {fileID: -152117605, guid: 08b475cae1dc8ff48939fe86c9bed3b7, type: 3}
   - {fileID: -122702287, guid: 08b475cae1dc8ff48939fe86c9bed3b7, type: 3}
+  - {fileID: 184804718, guid: 08b475cae1dc8ff48939fe86c9bed3b7, type: 3}
   - {fileID: 742884694, guid: 08b475cae1dc8ff48939fe86c9bed3b7, type: 3}
   - {fileID: 1767230323, guid: 08b475cae1dc8ff48939fe86c9bed3b7, type: 3}
   - {fileID: -265469451, guid: 08b475cae1dc8ff48939fe86c9bed3b7, type: 3}
@@ -110,6 +111,7 @@ SpriteAtlas:
   - level_tileset_9
   - level_tileset_8
   - level_tileset_48
+  - level_tileset_38
   - level_tileset_41
   - level_tileset_39
   - level_tileset_40

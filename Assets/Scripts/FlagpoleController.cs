@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor.Animations;
 
@@ -6,6 +7,13 @@ namespace DefaultNamespace
 {
     public class FlagpoleController : MonoBehaviour
     {
+        [Serializable]
+        struct ScoreZone
+        {
+            public int score;
+            public float minYPos;
+        }
+        
         [SerializeField] private Transform flag;
         [SerializeField] private float minYPos;
         [SerializeField] private AnimatorController smallMarioAnimatorController;
@@ -13,6 +21,7 @@ namespace DefaultNamespace
         [SerializeField] private AnimatorController fireMarioAnimatorController;
         [SerializeField] private float slideSpeed;
         [SerializeField] private Timer timer;
+        [SerializeField] private List<ScoreZone> scoreZones;
 
         private Transform playerTransform;
         private PlatformerPlayer playerMovement;
@@ -25,13 +34,23 @@ namespace DefaultNamespace
 
         private void Update()
         {
-            Slide(playerTransform, ref playerSliding, () => { });
-            Slide(flag, ref flagSliding, OnFlagSlideComplete);
+            Slide(playerTransform, ref playerSliding, () =>
+            {
+                if (!flagSliding)
+                    OnFlagSlideComplete();
+            });
+            Slide(flag, ref flagSliding, () =>
+            {
+                if (!playerSliding)
+                    OnFlagSlideComplete();
+            });
         }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (!other.CompareTag("Player")) return;
+
+            CalculateScore(other.transform);
 
             playerTransform = other.transform;
             playerMovement = other.GetComponent<PlatformerPlayer>();
@@ -61,6 +80,21 @@ namespace DefaultNamespace
 
             playerSliding = true;
             flagSliding = true;
+        }
+
+        private void CalculateScore(Transform playerTransform)
+        {
+            var yPos = playerTransform.position.y;
+
+            foreach (var scoreZone in scoreZones)
+            {
+                if (yPos > scoreZone.minYPos)
+                {
+                    Debug.Log(scoreZone.score);
+                    ScoreManager.Instance.AddScore(scoreZone.score);
+                    return;
+                }
+            }
         }
 
         private void Slide(Transform transform, ref bool isSliding, Action onComplete)
