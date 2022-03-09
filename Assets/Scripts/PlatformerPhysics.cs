@@ -10,7 +10,7 @@ public class PlatformerPhysics : MonoBehaviour
 
     protected Vector2 velocity;
     protected bool isGrounded;
-    protected Rigidbody2D rigidbody;
+    protected new Rigidbody2D rigidbody;
     protected ContactFilter2D contactFilter;
     protected RaycastHit2D[] hitBuffer = new RaycastHit2D[10]; // Size is arbitrary, but must be larger than however many objects can be collided with in a single fixed update
 
