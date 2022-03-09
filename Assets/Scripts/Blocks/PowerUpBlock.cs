@@ -27,7 +27,7 @@ namespace Blocks
             if (Triggered) return;
             
             base.Trigger();
-            
+            AudioManager.audioManager.playSound(5);
             spriteAnimator.enabled = false;
             spriteRenderer.sprite = triggeredSprite;
             

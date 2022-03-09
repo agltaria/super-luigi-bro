@@ -35,7 +35,7 @@ public class PlatformerPlayer : PlatformerPhysics
     
     
     [SerializeField] GameObject fireBall;
-    bool isInvincible; // Star man
+    public static bool isInvincible; // Star man
     float invincibilityTimer;
     bool isVulnerable; // I-Frames after being hurt
     float vulnerabilityTimer;
@@ -180,6 +180,7 @@ public class PlatformerPlayer : PlatformerPhysics
     protected override void Awake()
     {
         base.Awake();
+        OSTManager.isAlive = true;
         trueGravity = gravity;
         currentMaxSpeed = maxSpeed;
 

@@ -123,6 +123,34 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &4299628 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8448518738456687529, guid: 3025c1f9f2b41504da191c084b16d203, type: 3}
+  m_PrefabInstance: {fileID: 1317486420}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &4299629 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 8448518738456687528, guid: 3025c1f9f2b41504da191c084b16d203, type: 3}
+  m_PrefabInstance: {fileID: 1317486420}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4299631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4299628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdc52b8a9a936db4da290a86b9587380, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 4299629}
+  clips:
+  - {fileID: 8300000, guid: 8b81b27d28aa42b47ba6fc443f3413bc, type: 3}
+  - {fileID: 8300000, guid: 33ccfe249d87e4e47aa1cbf673544dd4, type: 3}
+  - {fileID: 8300000, guid: a27bb787a2fa4584984ce321975db811, type: 3}
+  - {fileID: 8300000, guid: 3c5f1e04ea4e0a949b3d1787d7daf74f, type: 3}
 --- !u!1001 &71569362
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -480,6 +508,107 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 736ecc69dce7b25408da3678d4b9a93b, type: 3}
+--- !u!1 &396083301 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8072163054135011532, guid: 80d7de6789faf5840ab1bac69fede349, type: 3}
+  m_PrefabInstance: {fileID: 898027516}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &396083302
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 396083301}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &515984287
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1346,6 +1475,10 @@ PrefabInstance:
       propertyPath: timer
       value: 
       objectReference: {fileID: 148362080}
+    - target: {fileID: 4950963792792564564, guid: d0940afd430600a4287760bf938f5042, type: 3}
+      propertyPath: slideSpeed
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4950963792792564567, guid: d0940afd430600a4287760bf938f5042, type: 3}
       propertyPath: m_RootOrder
       value: 21

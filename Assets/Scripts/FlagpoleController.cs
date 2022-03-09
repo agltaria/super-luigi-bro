@@ -27,7 +27,7 @@ namespace DefaultNamespace
         private PlatformerPlayer playerMovement;
         private Animator playerAnimator;
 
-        private bool playerSliding;
+        public static bool playerSliding;
         private bool flagSliding;
         
         private static readonly int FlagpoleJump = Animator.StringToHash("flagpoleJump");
@@ -77,7 +77,7 @@ namespace DefaultNamespace
             playerAnimator.speed = 1;
             
             timer.StopTimer();
-
+            OSTManager.ostManager.StopPlaying();
             playerSliding = true;
             flagSliding = true;
         }
@@ -100,7 +100,7 @@ namespace DefaultNamespace
         private void Slide(Transform transform, ref bool isSliding, Action onComplete)
         {
             if (!isSliding) return;
-            
+            AudioManager.audioManager.playFlagpole();
             transform.position += Vector3.down * slideSpeed * Time.deltaTime;
 
             if (!(transform.position.y < minYPos)) return;
@@ -108,15 +108,15 @@ namespace DefaultNamespace
             var temp = transform.position;
             temp.y = minYPos;
             transform.position = temp;
-
-            isSliding = false;
             
+            isSliding = false;
             onComplete.Invoke();
         }
 
         private void OnFlagSlideComplete()
         {
             playerAnimator.SetTrigger(FlagpoleJump);
+            OSTManager.ostManager.PlayWin();
         }
     }
 }
