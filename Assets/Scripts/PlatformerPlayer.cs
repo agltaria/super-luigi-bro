@@ -364,6 +364,7 @@ public class PlatformerPlayer : PlatformerPhysics
             if (isInvincible)
             {
                 // Hurt enemy
+                enemy.OnDeath(false, moveInput.x / Math.Abs(moveInput.x));
             }
             else if (isVulnerable)
             {
