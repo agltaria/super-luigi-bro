@@ -6,6 +6,7 @@ namespace Blocks
     public class BrickBlock : Block
     {
         [SerializeField] private BrickDebris brickDebris;
+        [SerializeField] private int breakingScore;
         
         private SpriteRenderer spriteRenderer;
         private new Collider2D collider;
@@ -21,10 +22,14 @@ namespace Blocks
         [ContextMenu("Trigger")]
         protected override void Trigger()
         {
+            base.Trigger();
+            
             if (PlatformerPlayer.CurrentForm is not (PlatformerPlayer.MarioForm.Big or PlatformerPlayer.MarioForm.Fire)) return;
             
             spriteRenderer.enabled = false;
             collider.enabled = false;
+            
+            ScoreManager.Instance.AddScore(breakingScore);
 
             brickDebris.Trigger();
         }

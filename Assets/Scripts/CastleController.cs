@@ -10,6 +10,7 @@ namespace DefaultNamespace
         [SerializeField] private float levelEndWait;
         [SerializeField] private Timer timer;
         [SerializeField] private float timerDrainSecondDuration;
+        [SerializeField] private int scorePerSecond;
 
         private Animator animator;
         
@@ -40,7 +41,7 @@ namespace DefaultNamespace
                     timer.CurrentTime = 0;
                 }
                 
-                // TODO: Add score
+                ScoreManager.Instance.AddScore(scorePerSecond);
                 
                 yield return new WaitForSeconds(timerDrainSecondDuration);
             }
