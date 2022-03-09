@@ -13,10 +13,15 @@ public class PlatformerEnemy : PlatformerPhysics
     [SerializeField] float CurrentDir = -1f;
     [SerializeField] float Boost = 0f;
     public float Speed;
+
+    public bool flipped;
     [SerializeField] int ScoreValue;
     [SerializeField] Collider2D collider;
 
     [SerializeField] bool kill = false;
+
+    [SerializeField] bool stomp = false;
+    public SpriteRenderer spr;
 
 
     // Update is called once per frame
@@ -24,13 +29,29 @@ public class PlatformerEnemy : PlatformerPhysics
     Vector2 move = new Vector2();
     protected override void SetTargetVelocity()
     {
-        velocity = new Vector2(CurrentDir * Speed, velocity.y + Boost);
-        //Debug.Log("we trying to move");
-        if (kill)
+
+        if (spr.isVisible)
         {
-            kill = false;
-            OnDeath(false, 1f);
+
+            velocity = new Vector2(CurrentDir * Speed, velocity.y + Boost);
+            //Debug.Log("we trying to move");
+            if (kill)
+            {
+                kill = false;
+                OnDeath(false, 1f);
+            }
+
+            if (stomp)
+            {
+                stomp = false;
+                OnDeath(true, 1f);
+            }
         }
+        else
+        {
+            velocity = new Vector2(0, 0);
+        }
+
 
     }
 
@@ -38,22 +59,27 @@ public class PlatformerEnemy : PlatformerPhysics
     {
         if (direction == 2 || direction == 3)
         {
+
             CurrentDir *= -1f;
+            flipped = !flipped;
         }
+        spr.flipX = flipped;
     }
 
     public virtual void OnDeath(bool stomped, float dir)
     {
-        Invoke("DIE", 1.5f);
+        Invoke("DIE", 2.0f);
         Speed = 0;
+        Destroy(collider);
+        gravity.y = 0f;
+        velocity = new Vector2(velocity.x, 0);
         if (!stomped)
         {
+            gravity.y = -15f;
             Speed = 1.5f;
             CurrentDir = dir;
             //Boost = 0.01f;
-            gravity = new Vector2(0, 1f);
-            velocity = new Vector2(velocity.x, velocity.y + 5f);
-            Destroy(collider);
+            spr.flipY = true;
         }
     }
 

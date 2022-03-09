@@ -11,7 +11,9 @@ GameObject:
   - component: {fileID: 7888687468586314215}
   - component: {fileID: 1165497004447079552}
   - component: {fileID: 316542182841021066}
+  - component: {fileID: 1250373739076715908}
   - component: {fileID: 6420255256001703452}
+  - component: {fileID: 5154938770583733466}
   m_Layer: 0
   m_Name: Koopa
   m_TagString: Untagged
@@ -107,6 +109,26 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!95 &1250373739076715908
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7706767765409689122}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9145909e2b0c5684dae60b25d662fb8b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!61 &6420255256001703452
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -133,3 +155,27 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1.4528266}
   m_EdgeRadius: 0
+--- !u!114 &5154938770583733466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7706767765409689122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 140c3a0c4f0a29f4682fb5334f3bd8bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gravity: {x: 0, y: -9.8}
+  minimumDistance: 0.001
+  collisionBuffer: 0.01
+  CurrentDir: -1
+  Boost: 0
+  Speed: 3
+  flipped: 0
+  ScoreValue: 200
+  collider: {fileID: 6420255256001703452}
+  kill: 0
+  spr: {fileID: 1165497004447079552}
+  animator: {fileID: 1250373739076715908}
