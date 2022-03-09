@@ -1,63 +1,34 @@
 ﻿using System;
 using UnityEngine;
-using UnityEditor.Animations;
 
 namespace DefaultNamespace
 {
     public class FlagpoleController : MonoBehaviour
     {
-        [SerializeField] private Transform flag;
+        [SerializeField] private BoxCollider2D flagpoleCollider;
+        [SerializeField] private BoxCollider2D castleDoorCollider;
         [SerializeField] private float minYPos;
-        [SerializeField] private AnimatorController smallMarioAnimatorController;
-        [SerializeField] private AnimatorController bigMarioAnimatorController;
-        [SerializeField] private AnimatorController fireMarioAnimatorController;
-        [SerializeField] private float slideSpeed;
-        [SerializeField] private Timer timer;
 
-        private Transform playerTransform;
-        private PlatformerPlayer playerMovement;
-        private Animator playerAnimator;
+        [SerializeField] private float slideSpeed;
+
+        private Transform player;
+        private Transform flag;
 
         private bool playerSliding;
         private bool flagSliding;
         
-        private static readonly int FlagpoleJump = Animator.StringToHash("flagpoleJump");
-
         private void Update()
         {
-            Slide(playerTransform, ref playerSliding, () => { });
+            Slide(player, ref playerSliding, () => { });
             Slide(flag, ref flagSliding, OnFlagSlideComplete);
         }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (!other.CompareTag("Player")) return;
-
-            playerTransform = other.transform;
-            playerMovement = other.GetComponent<PlatformerPlayer>();
-            playerAnimator = other.GetComponent<Animator>();
-
-            playerMovement.enabled = false;
-
-            switch (PlatformerPlayer.CurrentForm)
-            {
-                case PlatformerPlayer.MarioForm.Small:
-                    playerAnimator.runtimeAnimatorController = smallMarioAnimatorController;
-                    break;
-                case PlatformerPlayer.MarioForm.Big:
-                    playerAnimator.runtimeAnimatorController = bigMarioAnimatorController;
-                    break;
-                case PlatformerPlayer.MarioForm.Fire:
-                    playerAnimator.runtimeAnimatorController = fireMarioAnimatorController;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-            
-            playerAnimator.applyRootMotion = true;
-            playerAnimator.speed = 1;
-            
-            timer.StopTimer();
+            // TODO: Disable player input
+            // TODO: Disable player physics
+            // TODO: Stop timer
+            // TODO: Set player sprite to grab
 
             playerSliding = true;
             flagSliding = true;
@@ -67,12 +38,12 @@ namespace DefaultNamespace
         {
             if (!isSliding) return;
             
-            transform.position += Vector3.down * slideSpeed * Time.deltaTime;
+            transform.position -= Vector3.down * slideSpeed * Time.deltaTime;
 
             if (!(transform.position.y < minYPos)) return;
             
             var temp = transform.position;
-            temp.y = minYPos;
+            temp.x = minYPos;
             transform.position = temp;
 
             isSliding = false;
@@ -82,7 +53,12 @@ namespace DefaultNamespace
 
         private void OnFlagSlideComplete()
         {
-            playerAnimator.SetTrigger(FlagpoleJump);
+            playerSliding = false;
+
+            // TODO: Flip player sprite
+            // TODO: Small delay
+            // TODO: Backward jump off flagpole
+            // TODO: Start player walking right
         }
     }
 }
