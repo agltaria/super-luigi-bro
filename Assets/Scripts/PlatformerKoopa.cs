@@ -16,13 +16,12 @@ public class PlatformerKoopa : PlatformerEnemy
         base.OnDeath(stomped, dir);
         if (stomped)
         {
+            //INSERT STOMP KOOPA NOISE
             Debug.Log("IVE BEEN STOMPED");
             Speed = 0f;
-            //Destroy(this.GetComponent<Collider>());
+            //insert shell
             Instantiate(shell, this.transform.position, Quaternion.identity);
             Destroy(this.gameObject);
-
-            //insert shell
         }
     }
 }
