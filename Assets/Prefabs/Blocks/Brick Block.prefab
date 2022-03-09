@@ -328,6 +328,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   brickDebris: {fileID: 7879461878756684981}
+  breakingScore: 50
 --- !u!61 &1617611451291515050
 BoxCollider2D:
   m_ObjectHideFlags: 0

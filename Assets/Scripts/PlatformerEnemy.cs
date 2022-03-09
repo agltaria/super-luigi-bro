@@ -14,7 +14,7 @@ public class PlatformerEnemy : PlatformerPhysics
     [SerializeField] float Boost = 0f;
     public float Speed;
     [SerializeField] int ScoreValue;
-    [SerializeField] Collider2D collider;
+    [SerializeField] new Collider2D collider;
 
     [SerializeField] bool kill = false;
 

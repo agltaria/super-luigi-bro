@@ -9,7 +9,7 @@ using Blocks;
 public class PlatformerPlayer : PlatformerPhysics
 {
     public enum MarioForm { Small, Big, Fire }
-    public static MarioForm currentForm;
+    public static MarioForm CurrentForm;
     public int fireBalls = 2;
     [SerializeField] GameObject fireBall;
     bool isInvincible; // Star man
@@ -63,7 +63,7 @@ public class PlatformerPlayer : PlatformerPhysics
             if (!runDown)
             {
                 runDown = true;
-                if (currentForm == MarioForm.Fire && fireBalls > 0) ThrowAction();
+                if (CurrentForm == MarioForm.Fire && fireBalls > 0) ThrowAction();
             }
         }
         else
@@ -128,7 +128,7 @@ public class PlatformerPlayer : PlatformerPhysics
         }
 
         // Decrement invincibility timers && handle animations for these
-        Debug.Log("Vulnerable? " + isVulnerable);
+        // Debug.Log("Vulnerable? " + isVulnerable);
         if (isVulnerable)
         {
             Debug.Log("Decrement vulnerabilty " + vulnerabilityTimer);
@@ -192,7 +192,7 @@ public class PlatformerPlayer : PlatformerPhysics
             powerUpTimer += Time.unscaledDeltaTime;
             powerUpStage += Mathf.FloorToInt(powerUpTimer / 0.1f);
             powerUpTimer %= 0.1f;
-            if (currentForm == MarioForm.Small)
+            if (CurrentForm == MarioForm.Small)
             {
                 // Update sprite for hurt transistion
                 switch (powerUpStage)
@@ -222,7 +222,7 @@ public class PlatformerPlayer : PlatformerPhysics
                         break;
                 }
             }
-            else if (currentForm == MarioForm.Big)
+            else if (CurrentForm == MarioForm.Big)
             {
                 // Update sprite for mushroom transistion
                 switch (powerUpStage)
@@ -252,7 +252,7 @@ public class PlatformerPlayer : PlatformerPhysics
                         break;
                 }
             }
-            else if (currentForm == MarioForm.Fire)
+            else if (CurrentForm == MarioForm.Fire)
             {
                 // Update sprite for flower transistion
                 switch (powerUpStage)
@@ -371,10 +371,10 @@ public class PlatformerPlayer : PlatformerPhysics
                 // Nothing?
             }
             // Hurt Mario
-            else if ((int)currentForm > 0)
+            else if ((int)CurrentForm > 0)
             {
                 Time.timeScale = 0.0f;
-                currentForm = MarioForm.Small;
+                CurrentForm = MarioForm.Small;
                 powerUpStage = 0;
                 powerUpTimer = 0.0f;
                 animator.runtimeAnimatorController = animators[0];
@@ -401,11 +401,11 @@ public class PlatformerPlayer : PlatformerPhysics
         switch (powerUpType)
         {
             case 0: // Mushroom
-                if (((int)currentForm) == 0)
+                if (((int)CurrentForm) == 0)
                 {
                     // Power up to big form
                     Time.timeScale = 0.0f;
-                    currentForm = MarioForm.Big;
+                    CurrentForm = MarioForm.Big;
                     powerUpStage = 0;
                     powerUpTimer = 0.0f;
                     animator.runtimeAnimatorController = animators[1];
@@ -419,11 +419,11 @@ public class PlatformerPlayer : PlatformerPhysics
                 }
                 break;
             case 1: // Fire Flower
-                if (((int)currentForm) <= 1)
+                if (((int)CurrentForm) <= 1)
                 {
                     // Power up to fire form
                     Time.timeScale = 0.0f;
-                    currentForm = MarioForm.Fire;
+                    CurrentForm = MarioForm.Fire;
                     powerUpStage = 0;
                     powerUpTimer = 0.0f;
                     animator.runtimeAnimatorController = animators[2];
