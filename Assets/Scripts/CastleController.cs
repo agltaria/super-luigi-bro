@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace DefaultNamespace
 {
@@ -49,8 +50,8 @@ namespace DefaultNamespace
             animator.SetTrigger(RaiseFlag);
             
             yield return new WaitForSeconds(levelEndWait);
-            
-            // TODO: End the level
+
+            SceneManager.LoadScene("TitleScreen");
         }
     }
 }

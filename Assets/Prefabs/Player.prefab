@@ -381,6 +381,18 @@ MonoBehaviour:
   releasedJumpInfluence: 0.6
   slowFallInfluence: 0.5
   jumpSpeedInfluence: 0.1
+  _spawnLocations:
+  - _location: {x: -5, y: -4, z: 0}
+    _key: 0
+  - _location: {x: 57, y: -4, z: 0}
+    _key: 1
+  - _location: {x: 73, y: -4, z: 0}
+    _key: 2
+  - _location: {x: 156, y: -4, z: 0}
+    _key: 3
+  - _location: {x: 138, y: -4, z: 0}
+    _key: 4
+  _currentCheckpointKey: 0
   throwSpriteRenderer: {fileID: 8788416691841066722}
   spriteMask: {fileID: 8788416693496870493}
   animators:

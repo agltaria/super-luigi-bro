@@ -51,7 +51,7 @@ namespace DefaultNamespace
             {
                 Coins -= coinsForOneUp;
                 
-                // TODO: One up
+                PlayerPrefs.SetInt("MarioLives", PlayerPrefs.GetInt("MarioLives",1));
             }
         }
     }

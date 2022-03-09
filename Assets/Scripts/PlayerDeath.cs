@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace DefaultNamespace
 {
@@ -80,7 +81,10 @@ namespace DefaultNamespace
                 timer += Time.unscaledDeltaTime;
                 yield return null;
             }
-
+            
+            PlayerPrefs.SetInt("MarioLives",PlayerPrefs.GetInt("MarioLives") - 1);
+            PlayerPrefs.Save();
+            SceneManager.LoadSceneAsync("LevelStartScreen", LoadSceneMode.Additive);
             // TODO: Restart level
         }
     }

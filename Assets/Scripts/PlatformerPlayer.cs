@@ -1,23 +1,48 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEditor.Animations;
 using UnityEngine.InputSystem;
 using Blocks;
 using DefaultNamespace;
+using UnityEngine.SceneManagement;
+
+
+[Serializable]
+public struct SpawnLocations
+{
+    [SerializeField]private Vector3 _location;
+   [SerializeField] private int _key; // 0 = Start Location, 1 = Checkpoint 1, 2 = Checkpoint 2, 3 = OnEnterFromUnderworldPipe, 4 = Checkpoint 4, 5 = Checkpoint 5
+
+    public Vector3 Location => _location;
+    public int Key => _key;
+    
+    public SpawnLocations(Vector3 location, int key)
+    {
+        _location = location;
+        _key = key;
+    }
+}
+
 
 public class PlatformerPlayer : PlatformerPhysics
 {
     public enum MarioForm { Small, Big, Fire }
     public static MarioForm CurrentForm;
     public int fireBalls = 2;
+    
+    
     [SerializeField] GameObject fireBall;
     bool isInvincible; // Star man
     float invincibilityTimer;
     bool isVulnerable; // I-Frames after being hurt
     float vulnerabilityTimer;
-
+    
+    
+    
+    [Header("Mario Stats")]
     [SerializeField] float maxSpeed;
     [SerializeField] float acceleration;
     [SerializeField] float deceleration;
@@ -28,11 +53,19 @@ public class PlatformerPlayer : PlatformerPhysics
     [SerializeField] float slowFallInfluence = 0.5f;
     [SerializeField] float jumpSpeedInfluence = 0.30f; // Jump height is multiplied by 1.0 + (this) * (currentSpeed / maxSpeed), so that you jump higher when running
 
+    [Header("Spawn Handling")] 
+    [SerializeField] private SpawnLocations[] _spawnLocations;
+    [SerializeField] private int _currentCheckpointKey;
+    
+    
+    
     SpriteRenderer spriteRenderer;
     Animator animator;
+    [Header("Sprite Handling")]
     [SerializeField] SpriteRenderer throwSpriteRenderer;
     [SerializeField] SpriteMask spriteMask;
 
+    [Header("Animation Handling")]
     [SerializeField] AnimatorController[] animators; // small, big, fire, star?
     [SerializeField] Sprite[] powerUpMushroomSprites;
     [SerializeField] Sprite[] powerUpFlowerSprites;
@@ -44,7 +77,8 @@ public class PlatformerPlayer : PlatformerPhysics
     Vector2 smallMarioColliderScale = new Vector2(0.5f, 0.6875f);
     Vector2 smallMarioColliderOffset = new Vector2(0.0f, -0.594f);
     BoxCollider2D collider;
-
+    
+    [Header("Audio Handling")]
     [SerializeField] AudioClip[] audioClips; // 0 jump, 1 fireBall, 2 powerUp, 3 stomp, 4 pipe (take damage), 5 oneUp
     AudioSource audioSource;
 
@@ -58,7 +92,53 @@ public class PlatformerPlayer : PlatformerPhysics
     bool runDown;
     float throwCoolDown;
 
+    private bool _onEnterUnderworldPipe;
+    public bool OnPipe
+    {
+        get => _onEnterUnderworldPipe;
+        set
+        {
+            if (value)
+            {
+                if (isGrounded)
+                {
+                    Debug.Log($"can go in pipe");
+                    _onEnterUnderworldPipe = true;
+                }
+                else
+                    _onEnterUnderworldPipe = false;
+            }
+            else
+                _onEnterUnderworldPipe = false;
+        }
+        
+    }
+    
+    private bool _onExitUnderworldPipe;
+    
+    public bool OnExitUnderworldPipe
+    {
+        get => _onExitUnderworldPipe;
+        set
+        {
+            if (value)
+            {
+                if (isGrounded)
+                {
+                    Debug.Log($"can go in pipe");
+                    _onExitUnderworldPipe = true;
+                }
+                else
+                    _onExitUnderworldPipe = false;
+            }
+            else
+                _onExitUnderworldPipe = false;
+        }
+        
+    }
+
     public void OnMove(InputValue value) { moveInput = value.Get<Vector2>(); }
+    
     public void OnRun(InputValue value)
     {
         if (value.Get<float>() > 0.1f)
@@ -110,6 +190,68 @@ public class PlatformerPlayer : PlatformerPhysics
         throwSpriteRenderer.enabled = false;
         spriteMask.enabled = false;
     }
+
+
+    private void OnEnable()
+    {
+        if (!PlayerPrefs.HasKey("MarioLives"))
+        {
+            PlayerPrefs.SetInt("MarioLives",3);
+        }
+        
+        SceneManager.sceneLoaded += MoveMarioToCheckpoint;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= MoveMarioToCheckpoint;
+    }
+
+    [ContextMenu("Debug/ResetCheckpoint")]
+    public void ResetCheckpointCounter() => PlayerPrefs.DeleteKey("CheckpointKey");
+    
+    [ContextMenu("Debug/ReseMariotLives")]
+    public void RestMarioLives() => PlayerPrefs.DeleteKey("MarioLives");
+
+    [ContextMenu("Debug/ResetAll")]
+    public void ResetAllPlayerPrefs()
+    {
+        RestMarioLives();
+        ResetCheckpointCounter();
+    }
+
+    private void MoveMarioToCheckpoint(Scene scene, LoadSceneMode mode)
+    {
+
+        if (!PlayerPrefs.HasKey("CheckpointKey"))
+        {
+            Debug.Log("Does not have key");
+            _currentCheckpointKey = 0;
+        }
+        else
+        {
+            _currentCheckpointKey = PlayerPrefs.GetInt("CheckpointKey");
+            Debug.Log("Current key : " + _currentCheckpointKey);
+
+        }
+       
+
+        if (scene == SceneManager.GetSceneByBuildIndex(1))
+        {
+
+            SpawnLocations toSpawnLocation = _spawnLocations.Single(x => x.Key == _currentCheckpointKey);
+            transform.position = toSpawnLocation.Location;
+
+            Debug.Log(toSpawnLocation.Key);
+            
+            if (_currentCheckpointKey == 3)//3 is the number for the spawn location that exited the underworld pipe
+            {
+                StartCoroutine(EnterFromUnderworldPipeCoroutine());
+            } 
+            
+        }
+    }
+    
 
     protected override void Update()
     {
@@ -293,7 +435,14 @@ public class PlatformerPlayer : PlatformerPhysics
 
         if (Mathf.Abs(moveInput.x) > 0.1f && !isCrouching)
         {
-            if (moveInput.x > 0.0f) velocityX += acceleration * Time.deltaTime;
+            if (moveInput.x > 0.0f)
+            {
+                velocityX += acceleration * Time.deltaTime;
+                
+                if (_onExitUnderworldPipe)
+                    StartCoroutine(ExitUnderworldAnimationCoroutine());
+
+            }
             else velocityX -= acceleration * Time.deltaTime;
 
             if (Mathf.Abs(velocityX) > currentMaxSpeed)
@@ -321,8 +470,20 @@ public class PlatformerPlayer : PlatformerPhysics
         // Crouching
         if (isGrounded)
         {
-            if (moveInput.y < -0.1f) { animator.SetBool("isCrouching", true); isCrouching = true; }
-            else { animator.SetBool("isCrouching", false); isCrouching = false; }
+            if (moveInput.y < -0.1f) 
+            { 
+                animator.SetBool("isCrouching", true); 
+                isCrouching = true;
+
+                if (_onEnterUnderworldPipe)
+                    StartCoroutine(EnterUnderworldAnimationCoroutine());
+               
+            }
+            else
+            {
+                animator.SetBool("isCrouching", false); 
+                isCrouching = false;
+            }
         }
 
         // Visual code
@@ -336,6 +497,63 @@ public class PlatformerPlayer : PlatformerPhysics
         if (isGrounded && Mathf.Abs(velocity.x) > 0.1f) spriteRenderer.flipX = (velocity.x < 0.0f);
     }
 
+   IEnumerator EnterUnderworldAnimationCoroutine()
+    {
+        Time.timeScale = 0.0f;
+        float timer = 0;
+        float waitBeforeRestart = 1f;
+
+        while (timer < waitBeforeRestart)
+        {
+            transform.position += Vector3.up * -0.3f * Time.unscaledDeltaTime;
+            timer += Time.unscaledDeltaTime;
+            yield return null;
+        }
+        
+        Time.timeScale = 1f;
+        SceneManager.LoadSceneAsync("Underground");
+    }
+    
+   IEnumerator ExitUnderworldAnimationCoroutine()
+   {
+       Time.timeScale = 0.0f;
+
+       float timer = 0;
+       float waitBeforeRestart = 1f;
+
+       while (timer < waitBeforeRestart)
+       {
+           transform.position += Vector3.left * -0.1f * Time.unscaledDeltaTime;
+           timer += Time.unscaledDeltaTime;
+           yield return null;
+       }
+        
+       PlayerPrefs.SetInt("CheckpointKey",3);
+       PlayerPrefs.Save();
+       Time.timeScale = 1f;
+       SceneManager.LoadSceneAsync("Level 1-1");
+   }
+   
+   IEnumerator EnterFromUnderworldPipeCoroutine()
+   {
+       Time.timeScale = 0.0f;
+        Debug.Log("started this");
+       float timer = 0;
+       float waitBeforeRestart = 0.5f;
+
+       while (timer < waitBeforeRestart)
+       {
+           transform.position += Vector3.down * -5f * Time.unscaledDeltaTime;
+           timer += Time.unscaledDeltaTime;
+           yield return null;
+       }
+        
+       PlayerPrefs.SetInt("CheckpointKey",4);
+       PlayerPrefs.Save();
+
+       Time.timeScale = 1f;
+   }
+   
     void ThrowAction()
     {
         if (throwCoolDown <= 0.0f)
@@ -349,6 +567,15 @@ public class PlatformerPlayer : PlatformerPhysics
             GameObject temp = Instantiate(fireBall, transform.position + (new Vector3(0.75f, 0.35f) * (spriteRenderer.flipX ? -1 : 1)), Quaternion.identity);
             temp.GetComponent<PlatformerFireBall>().SetDirection(spriteRenderer.flipX ? -1 : 1);
         }
+    }
+
+    public void UpdateCheckpoint(int key)
+    {
+        print("updating checkpoint...");
+        PlayerPrefs.SetInt("CheckpointKey",key);
+        PlayerPrefs.Save();
+        _currentCheckpointKey = PlayerPrefs.GetInt("CheckpointKey");
+        
     }
     protected override void HitWall(int direction, RaycastHit2D hit)
     {
@@ -467,7 +694,8 @@ public class PlatformerPlayer : PlatformerPhysics
                 break;
             case 3: // One-Up mushroom
                 // Increment lives
-                // TODO TO DO Increment lives counter on lives manager or however it works
+                PlayerPrefs.SetInt("MarioLives", PlayerPrefs.GetInt("MarioLives") + 1);
+                PlayerPrefs.Save();
                 PlaySound(5);
                 break;
             default:
