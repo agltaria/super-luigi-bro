@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor.Animations;
 using UnityEngine.InputSystem;
+using Blocks;
 
 public class PlatformerPlayer : PlatformerPhysics
 {
@@ -37,9 +38,9 @@ public class PlatformerPlayer : PlatformerPhysics
     float powerUpTimer;
     int powerUpStage;
 
-    Vector2 bigMarioColliderScale = new Vector2(0.75f, 1.4375f);
+    Vector2 bigMarioColliderScale = new Vector2(0.625f, 1.4375f);
     Vector2 bigMarioColliderOffset = new Vector2(0.0f, -0.21885f);
-    Vector2 smallMarioColliderScale = new Vector2(0.63f, 0.6875f);
+    Vector2 smallMarioColliderScale = new Vector2(0.5f, 0.6875f);
     Vector2 smallMarioColliderOffset = new Vector2(0.0f, -0.594f);
     BoxCollider2D collider;
 
@@ -126,6 +127,65 @@ public class PlatformerPlayer : PlatformerPhysics
             }
         }
 
+        // Decrement invincibility timers && handle animations for these
+        Debug.Log("Vulnerable? " + isVulnerable);
+        if (isVulnerable)
+        {
+            Debug.Log("Decrement vulnerabilty " + vulnerabilityTimer);
+            vulnerabilityTimer -= Time.deltaTime;
+            if (vulnerabilityTimer <= 0.0f)
+            {
+                isVulnerable = false;
+                vulnerabilityTimer = 0.0f;
+                spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                Debug.Log("Vulnerability expired");
+            }
+        }
+        if (isInvincible)
+        {
+            invincibilityTimer -= Time.deltaTime;
+
+            // Exit invinsibility state
+            if (invincibilityTimer <= 0.0f)
+            {
+                isInvincible = false;
+                invincibilityTimer = 0.0f;
+                // Resume normal music
+                // Reset visuals
+                spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            }
+
+            // Animate invincibility
+            else
+            {
+                float playRate = 1;
+                if (invincibilityTimer <= 2.0f) playRate = 0.5f;
+
+                switch (Mathf.FloorToInt((invincibilityTimer % (0.1999f / playRate)) * (20 * playRate)))
+                {
+                    case 0:
+                        spriteRenderer.color = new Color(0, 0, 0);
+                        throwSpriteRenderer.color = new Color(0, 0, 0);
+                        break;
+                    case 1:
+                        spriteRenderer.color = new Color(1, 0, 0);
+                        throwSpriteRenderer.color = new Color(1, 0, 0);
+                        break;
+                    case 2:
+                        spriteRenderer.color = new Color(1, 1, 1);
+                        throwSpriteRenderer.color = new Color(1, 1, 1);
+                        break;
+                    case 3:
+                        spriteRenderer.color = new Color(0, 1, 0);
+                        throwSpriteRenderer.color = new Color(0, 1, 0);
+                        break;
+                    default:
+                        ;
+                        break;
+                }
+            }
+        }
+
         // Animate power-up
         if (powerUpStage >= 0)
         {
@@ -134,7 +194,7 @@ public class PlatformerPlayer : PlatformerPhysics
             powerUpTimer %= 0.1f;
             if (currentForm == MarioForm.Small)
             {
-                // Update sprite for mushroom transistion
+                // Update sprite for hurt transistion
                 switch (powerUpStage)
                 {
                     case 0:
@@ -159,7 +219,6 @@ public class PlatformerPlayer : PlatformerPhysics
                         powerUpTimer = 0.0f;
                         Time.timeScale = 1.0f;
                         animator.enabled = true;
-                        spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f, 1.0f)
                         break;
                 }
             }
@@ -222,10 +281,8 @@ public class PlatformerPlayer : PlatformerPhysics
                         animator.enabled = true;
                         break;
                 }
-
+                // Switch case will interupt anything beyond this point!
             }
-
-            //
         }
     }
 
@@ -268,13 +325,13 @@ public class PlatformerPlayer : PlatformerPhysics
         }
 
         // Visual code
-        animator.SetBool("isGrounded",  isGrounded);
+        animator.SetBool("isGrounded", isGrounded);
         if (!animator.GetBool("isTurning")) animator.SetBool("isTurning", moveInput.x * velocity.x < 0 && Mathf.Abs(velocity.x) > 2.0f && isGrounded);
         else { animator.SetBool("isTurning", moveInput.x * velocity.x < 0 && isGrounded); if (!isGrounded) spriteRenderer.flipX = !spriteRenderer.flipX; }
         animator.SetBool("isMoving", Mathf.Abs(moveInput.x) > 0.1f || Mathf.Abs(velocity.x) > 0.1f);
         if (jumpDown && !isGrounded && !isCrouching && !animator.GetBool("inJump")) { animator.SetBool("inJump", true); if (moveInput.x > 0.0f) spriteRenderer.flipX = false; else if (moveInput.x < 0.0f) spriteRenderer.flipX = true; }
         else if (isGrounded) animator.SetBool("inJump", false);
-        animator.speed = isGrounded ? Mathf.Abs(velocity.x) / maxSpeed * 1.5f : 0.0f;
+        animator.speed = isGrounded ? Mathf.Clamp(Mathf.Abs(velocity.x) / maxSpeed * 1.75f, 1.0f, 1.75f) : 0.0f;
         if (isGrounded && Mathf.Abs(velocity.x) > 0.1f) spriteRenderer.flipX = (velocity.x < 0.0f);
     }
 
@@ -295,26 +352,47 @@ public class PlatformerPlayer : PlatformerPhysics
     {
         base.HitWall(direction, hit);
 
-        //PlatformerEnemy enemy = hit.collider.gameObject.GetComponent<PlatformerEnemy>();
-        //if (hit.normal.y > 0.9f && enemy != null)
-        //{
-        //    // Hurt enemy and bounce Mario
-        //    enemy.GetHurt(true);
-        //    velocity = new Vector2(bounceForce, velocity.x);
-        //}
-        //else if (enemy != null)
-        //{
-        //    // Hurt Mario
-        //    Time.timeScale = 0.0f;
-        //    currentForm = MarioForm.Small;
-        //    powerUpStage = 0;
-        //    powerUpTimer = 0.0f;
-        //    animator.runtimeAnimatorController = animators[0];
-        //    animator.enabled = false;
-        //    collider.offset = smallMarioColliderOffset;
-        //    collider.size = smallMarioColliderScale;
-        //    spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
-        //}
+        PlatformerEnemy enemy = hit.collider.gameObject.GetComponent<PlatformerEnemy>(); // Currently, Mario must be moving for him to get hurt
+        if (hit.normal.y > 0.9f && enemy != null)
+        {
+            // Hurt enemy and bounce Mario
+            enemy.OnDeath(true, 1);
+            velocity = new Vector2(velocity.x, bounceForce);
+        }
+        else if (enemy != null)
+        {
+            if (isInvincible)
+            {
+                // Hurt enemy
+            }
+            else if (isVulnerable)
+            {
+                // Nothing?
+            }
+            // Hurt Mario
+            else if ((int)currentForm > 0)
+            {
+                Time.timeScale = 0.0f;
+                currentForm = MarioForm.Small;
+                powerUpStage = 0;
+                powerUpTimer = 0.0f;
+                animator.runtimeAnimatorController = animators[0];
+                animator.enabled = false;
+                collider.offset = smallMarioColliderOffset;
+                collider.size = smallMarioColliderScale;
+                spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+                isVulnerable = true;
+                vulnerabilityTimer = 2.0f;
+            }
+            else
+            {
+                // Call game over transisition
+            }
+        }
+
+        Block block = hit.collider.gameObject.GetComponent<Block>();
+        if (hit.normal.y < -0.9f && block != null) block.Trigger();
+
     }
 
     public void GetPowerUp(int powerUpType) // Types are as follows: 0 mushroom, 1 fire flower, 2 star, 3 one-up mushroom
@@ -359,7 +437,8 @@ public class PlatformerPlayer : PlatformerPhysics
                 break;
             case 2: // Star man
                 // Make call to music player to play invincibility music
-
+                invincibilityTimer = 9.0f;
+                isInvincible = true;
                 break;
             case 3: // One-Up mushroom
                 // Increment lives
@@ -376,7 +455,6 @@ public class PlatformerPlayer : PlatformerPhysics
         {
             GetPowerUp((int)powerUp.powerUpType);
             Destroy(powerUp.gameObject);
-            Debug.Log("Collected power of type " + (int)powerUp.powerUpType);
         }
     }
 }

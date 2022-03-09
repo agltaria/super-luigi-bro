@@ -20,7 +20,7 @@ namespace Blocks
         }
 
         [ContextMenu("Trigger")]
-        protected override void Trigger()
+        public override void Trigger()
         {
             spriteAnimator.enabled = false;
             spriteRenderer.sprite = triggeredSprite;

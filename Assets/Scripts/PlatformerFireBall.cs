@@ -55,24 +55,19 @@ public class PlatformerFireBall : PlatformerPhysics
 
         if (!isExploding)
         {
-            //PlatformerEnemy enemy = hit.collider.gameObject.GetComponent<PlatformerEnemy>();
-            //if (enemy != null)
-            //{
-            //    // Hurt enemy and explode
-            //    enemy.GetHurt(false);
-            //    GetComponent<Animator>().SetTrigger("explode");
-            //    isExploding = true;
-            //}
-            //else
-            if (hit.collider.gameObject.tag == "Untagged")
+            PlatformerEnemy enemy = hit.collider.gameObject.GetComponent<PlatformerEnemy>();
+            if (enemy != null)
+            {
+                // Hurt enemy and explode
+                enemy.OnDeath(false, velocity.x / Mathf.Abs(velocity.x));
+                GetComponent<Animator>().SetTrigger("explode");
+                isExploding = true;
+            }
+            else if (hit.collider.gameObject.tag == "Untagged")
             {
                 switch (direction)
                 {
                     case 2:
-                        // Explode
-                        GetComponent<Animator>().SetTrigger("explode");
-                        isExploding = true;
-                        break;
                     case 3:
                         // Explode
                         GetComponent<Animator>().SetTrigger("explode");
