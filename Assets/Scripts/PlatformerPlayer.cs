@@ -409,6 +409,8 @@ public class PlatformerPlayer : PlatformerPhysics
 
     public void GetPowerUp(int powerUpType) // Types are as follows: 0 mushroom, 1 fire flower, 2 star, 3 one-up mushroom
     {
+        ScoreManager.Instance.AddScore(1000);
+        
         switch (powerUpType)
         {
             case 0: // Mushroom
