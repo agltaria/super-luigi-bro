@@ -16,7 +16,7 @@ namespace DefaultNamespace
         public float CurrentTime
         {
             get => _currentTime;
-            private set
+            set
             {
                 _currentTime = value;
                 timeChanged.Invoke();

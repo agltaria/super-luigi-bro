@@ -13,7 +13,7 @@ public class PowerUpMovement : MonoBehaviour
     [SerializeField] private float jumpCooldown;
     
     private bool movingLeft;
-    private Rigidbody2D rigidbody;
+    private new Rigidbody2D rigidbody;
     private float timeSinceLastJump;
 
     private void Awake()

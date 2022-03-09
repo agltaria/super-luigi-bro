@@ -6,6 +6,7 @@ namespace Blocks
     {
         [SerializeField] private Sprite triggeredSprite;
         [SerializeField] private GameObject blockPowerUpPrefab;
+        [SerializeField] private GameObject powerUpPrefab;
 
         private SpriteRenderer spriteRenderer;
         private Animator spriteAnimator;
@@ -31,7 +32,9 @@ namespace Blocks
         {
             base.OnBumpComplete();
 
-            Instantiate(blockPowerUpPrefab, transform);
+            var blockPowerUp = Instantiate(blockPowerUpPrefab, transform);
+
+            blockPowerUp.GetComponent<BlockPowerUp>().powerUpPrefab = powerUpPrefab;
 
             enabled = false;
         }

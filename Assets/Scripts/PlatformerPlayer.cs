@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,7 @@ using UnityEngine.InputSystem;
 public class PlatformerPlayer : PlatformerPhysics
 {
     public enum MarioForm { Small, Big, Fire }
-    public MarioForm currentForm;
+    public static MarioForm currentForm;
     public int fireBalls = 2;
     [SerializeField] GameObject fireBall;
     bool isInvincible; // Star man
@@ -377,6 +378,5 @@ public class PlatformerPlayer : PlatformerPhysics
             Destroy(powerUp.gameObject);
             Debug.Log("Collected power of type " + (int)powerUp.powerUpType);
         }
-
     }
 }
