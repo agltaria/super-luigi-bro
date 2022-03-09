@@ -369,12 +369,5 @@ namespace DefaultNamespace
             Destroy(powerUp.gameObject);
             Debug.Log("Collected power of type " + (int)powerUp.powerUpType);
         }
-
-        public void Die()
-        {
-            // TODO: Disable controls
-            // TODO: Play death animation
-            // TODO: Restart level
-        }
     }
 }
