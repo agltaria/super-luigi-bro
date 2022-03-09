@@ -8,7 +8,7 @@ namespace Blocks
         [SerializeField] private BrickDebris brickDebris;
         
         private SpriteRenderer spriteRenderer;
-        private Collider2D collider;
+        private new Collider2D collider;
 
         protected override void Awake()
         {

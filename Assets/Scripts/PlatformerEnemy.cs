@@ -14,7 +14,7 @@ public class PlatformerEnemy : PlatformerPhysics
     [SerializeField] float Boost = 0f;
     public float Speed;
     [SerializeField] int ScoreValue;
-    [SerializeField] Collider2D collider;
+    [SerializeField] new Collider2D collider;
 
     [SerializeField] bool kill = false;
 
@@ -34,13 +34,14 @@ public class PlatformerEnemy : PlatformerPhysics
 
     }
 
-    protected override void HitWall(int direction)
-    {
-        if (direction == 2 || direction == 3)
-        {
-            CurrentDir *= -1f;
-        }
-    }
+    // TODO: Wrong override
+    // protected override void HitWall(int direction)
+    // {
+    //     if (direction == 2 || direction == 3)
+    //     {
+    //         CurrentDir *= -1f;
+    //     }
+    // }
 
     public virtual void OnDeath(bool stomped, float dir)
     {

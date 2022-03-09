@@ -11,7 +11,7 @@ public class PlatformerFireBall : PlatformerPhysics
     [SerializeField] float cameraBounds = 12.0f;
     int direction;
     bool bufferedBounce;
-    Transform camera;
+    new Transform camera;
     Vector3 offset = new Vector3(0, 0, -10.0f);
 
     protected override void Awake()
