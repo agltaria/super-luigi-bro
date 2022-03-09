@@ -104,8 +104,6 @@ public class PlatformerPlayer : PlatformerPhysics
         animator = GetComponent<Animator>();
         throwSpriteRenderer.enabled = false;
         spriteMask.enabled = false;
-
-        //currentForm = MarioForm.Big;
     }
 
     protected override void Update()
@@ -129,17 +127,14 @@ public class PlatformerPlayer : PlatformerPhysics
         }
 
         // Decrement invincibility timers && handle animations for these
-        // Debug.Log("Vulnerable? " + isVulnerable);
         if (isVulnerable)
         {
-            Debug.Log("Decrement vulnerabilty " + vulnerabilityTimer);
             vulnerabilityTimer -= Time.deltaTime;
             if (vulnerabilityTimer <= 0.0f)
             {
                 isVulnerable = false;
                 vulnerabilityTimer = 0.0f;
                 spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-                Debug.Log("Vulnerability expired");
             }
         }
         if (isInvincible)
@@ -362,33 +357,48 @@ public class PlatformerPlayer : PlatformerPhysics
         }
         else if (enemy != null)
         {
-            if (isInvincible)
+            PlatformerShell shell = hit.collider.gameObject.GetComponent<PlatformerShell>();
+            bool notAShell = true;
+            if (shell != null)
             {
-                // Hurt enemy
-                enemy.OnDeath(false, moveInput.x / Math.Abs(moveInput.x));
+                if (!shell.isMoving)
+                {
+                    enemy.OnDeath(false, moveInput.x / Math.Abs(moveInput.x));
+                    isVulnerable = true;
+                    vulnerabilityTimer = 0.05f;
+                    notAShell = false;
+                }
             }
-            else if (isVulnerable)
+            if (notAShell)
             {
-                // Nothing?
-            }
-            // Hurt Mario
-            else if ((int)CurrentForm > 0)
-            {
-                Time.timeScale = 0.0f;
-                CurrentForm = MarioForm.Small;
-                powerUpStage = 0;
-                powerUpTimer = 0.0f;
-                animator.runtimeAnimatorController = animators[0];
-                animator.enabled = false;
-                collider.offset = smallMarioColliderOffset;
-                collider.size = smallMarioColliderScale;
-                spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
-                isVulnerable = true;
-                vulnerabilityTimer = 2.0f;
-            }
-            else
-            {
-                PlayerDeath.Instance.Die();
+                if (isInvincible)
+                {
+                    // Hurt enemy
+                    enemy.OnDeath(false, moveInput.x / Math.Abs(moveInput.x));
+                }
+                else if (isVulnerable)
+                {
+                    // Nothing?
+                }
+                // Hurt Mario
+                else if ((int)CurrentForm > 0)
+                {
+                    Time.timeScale = 0.0f;
+                    CurrentForm = MarioForm.Small;
+                    powerUpStage = 0;
+                    powerUpTimer = 0.0f;
+                    animator.runtimeAnimatorController = animators[0];
+                    animator.enabled = false;
+                    collider.offset = smallMarioColliderOffset;
+                    collider.size = smallMarioColliderScale;
+                    spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+                    isVulnerable = true;
+                    vulnerabilityTimer = 2.0f;
+                }
+                else
+                {
+                    PlayerDeath.Instance.Die();
+                }
             }
         }
 
