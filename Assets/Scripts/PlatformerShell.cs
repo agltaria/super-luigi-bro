@@ -22,6 +22,11 @@ public class PlatformerShell : PlatformerEnemy
         else
         {
             timer = 8f;
+            if (!spr.isVisible)
+            {
+                Debug.Log("MY FINAL MESSAGE");
+                Destroy(this.gameObject);
+            }
         }
         animator.SetFloat("Timer", timer);
         if (timer < 0f)
@@ -32,23 +37,43 @@ public class PlatformerShell : PlatformerEnemy
             Destroy(this.gameObject);
         }
 
-        if (!spr.isVisible)
-        {
-            Destroy(this.gameObject);
-        }
-
     }
 
     void Start()
     {
         CurrentDir = 0f;
+        Debug.Log("IVE BEEN BIRTHED");
     }
 
     public override void OnDeath(bool stomped, float dir)
     {
-        CurrentDir = dir;
-        isMoving = !isMoving;
+        if (!stomped)
+        {
+            CurrentDir = dir;
+            isMoving = true;
+        }
+        else
+        {
+            CurrentDir = 0f;
+            isMoving = false;
+        }
 
     }
+    protected override void HitWall(int direction, RaycastHit2D hit)
+    {
+        if (hit.collider.gameObject.tag == "Enemy")
+        {
+            PlatformerEnemy enemy = hit.collider.gameObject.GetComponent<PlatformerEnemy>();
+            enemy.OnDeath(false, CurrentDir);
+        }
+        else if ((direction == 2 || direction == 3))
+        {
+
+            CurrentDir *= -1f;
+            flipped = !flipped;
+            spr.flipX = flipped;
+        }
+    }
+
 
 }
