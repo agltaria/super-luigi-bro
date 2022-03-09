@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.Events;
 using UnityEngine;
 
@@ -20,18 +18,20 @@ public class ScoreManager : MonoBehaviour
             scoreChanged.Invoke();
         }
     }
-
-   
-    // Start is called before the first frame update
-    void Start()
-    {
+    
+    public static ScoreManager Instance;
         
-    }
-
-    // Update is called once per frame
-    void Update()
+    protected void Awake()
     {
-        
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Debug.LogWarning($"More than one {nameof(ScoreManager)}.");
+            enabled = false;
+        }
     }
 
     public void AddScore(int points)
