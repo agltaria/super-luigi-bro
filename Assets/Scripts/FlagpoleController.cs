@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.Animations;
+//using UnityEditor.Animations;
 
 namespace DefaultNamespace
 {
@@ -16,9 +16,9 @@ namespace DefaultNamespace
         
         [SerializeField] private Transform flag;
         [SerializeField] private float minYPos;
-        [SerializeField] private AnimatorController smallMarioAnimatorController;
-        [SerializeField] private AnimatorController bigMarioAnimatorController;
-        [SerializeField] private AnimatorController fireMarioAnimatorController;
+        [SerializeField] private RuntimeAnimatorController smallMarioAnimatorController;
+        [SerializeField] private RuntimeAnimatorController bigMarioAnimatorController;
+        [SerializeField] private RuntimeAnimatorController fireMarioAnimatorController;
         [SerializeField] private float slideSpeed;
         [SerializeField] private Timer timer;
         [SerializeField] private List<ScoreZone> scoreZones;
