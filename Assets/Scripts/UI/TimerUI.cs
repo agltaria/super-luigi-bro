@@ -16,7 +16,7 @@ namespace UI
         private void Awake()
         {
             timer.timeChanged.AddListener(OnTimeChanged);
-
+            text.text = string.Format("Time");
             //text = GetComponent<TextMeshProUGUI>();
         }
         private void Update()
@@ -26,6 +26,7 @@ namespace UI
 
         private void OnTimeChanged()
         {
+            if(MenuSelect.isPlay)
             text.text = string.Format("Time" + "\n" + timer.CurrentTime.ToString("000"));//timer.CurrentTime.ToString("000");
         }
     }

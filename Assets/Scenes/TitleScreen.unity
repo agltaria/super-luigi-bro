@@ -9374,6 +9374,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1725552002}
   - component: {fileID: 1725552003}
+  - component: {fileID: 1725552004}
+  - component: {fileID: 1725552005}
   m_Layer: 0
   m_Name: cursor
   m_TagString: Untagged
@@ -9389,7 +9391,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1725552001}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -64.6001, y: -21.199951, z: -1440}
+  m_LocalPosition: {x: -64.6001, y: -21, z: -1440}
   m_LocalScale: {x: 8, y: 8, z: 8}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -9448,6 +9450,50 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1725552004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1725552001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 695642f0fed223d4fb8ffee2093459f4, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 1860221866}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Mario
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
+--- !u!114 &1725552005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1725552001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4e13f07649bc1d4cba2f65149ef581e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  is1P: 1
+  cursor: {fileID: 1725552003}
 --- !u!1 &1745420509
 GameObject:
   m_ObjectHideFlags: 0
@@ -9528,6 +9574,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1745420509}
   m_CullTransparentMesh: 1
+--- !u!114 &1860221866 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2303954156765742221, guid: 9e05f8a292ac5a24aac12d9526e716dd, type: 3}
+  m_PrefabInstance: {fileID: 2303954156708967017}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2303954156708967017
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9810,4 +9867,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4e13f07649bc1d4cba2f65149ef581e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  is1P: 1
   cursor: {fileID: 1725552003}
