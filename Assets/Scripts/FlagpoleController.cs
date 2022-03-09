@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEditor.Animations;
+using UnityEngine;
+using UnityEngine.Animations;
 
 namespace DefaultNamespace
 {
