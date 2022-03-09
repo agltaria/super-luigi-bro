@@ -5,13 +5,12 @@ using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
 {
-    public static int score = 0;
-
+    public static int displayScore = 0;
     public UnityEvent scoreChanged = new UnityEvent();
+    public static int topScore = 999999;
+    [SerializeField] private int _currentScore;
 
-    private float _currentScore;
-
-    public float currentScore
+    public int currentScore
     {
         get => _currentScore;
         private set
@@ -25,22 +24,35 @@ public class ScoreManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        //StartCoroutine(UpdateScore());
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        //currentScore += 1; //test
     }
 
     public void AddScore(int points)
     {
-        score += points;
+        currentScore += points;
+        
     }
 
     public void ResetScore()
     {
-        score = 0;
+        currentScore = 0;
+    }
+
+    private IEnumerator UpdateScore()
+    {
+        while (true)
+        {
+            if (displayScore < currentScore)
+            {
+                displayScore++;
+            }
+            yield return new WaitForSeconds(0.01f); 
+        }
     }
 }
