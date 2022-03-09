@@ -10,7 +10,7 @@ public class PlatformerEnemy : PlatformerPhysics
 
     }
 
-    [SerializeField] float CurrentDir = -1f;
+    public float CurrentDir = -1f;
     [SerializeField] float Boost = 0f;
     public float Speed;
 

@@ -6,16 +6,21 @@ public class PlatformerKoopa : PlatformerEnemy
 {
     // Start is called before the first frame update
     [SerializeField] Animator animator;
-    [SerializeField] Sprite sprite;
+    [SerializeField] Sprite abc;
+    [SerializeField] GameObject shell;
     public override void OnDeath(bool stomped, float dir)
     {
-        spr.sprite = sprite;
+        //Debug.Log("i should change my sprite but i wont cause im a bitch");
+        //spr.sprite = abc;
+        animator.SetBool("Stomped", true);
         base.OnDeath(stomped, dir);
         if (stomped)
         {
             Speed = 0f;
+            Destroy(this.GetComponent<Collider>());
+            Instantiate(shell, this.transform.position, Quaternion.identity);
+            Destroy(this.gameObject);
 
-            animator.SetBool("Stomped", stomped);
             //insert shell
         }
     }

@@ -177,5 +177,8 @@ MonoBehaviour:
   ScoreValue: 200
   collider: {fileID: 6420255256001703452}
   kill: 0
+  stomp: 0
   spr: {fileID: 1165497004447079552}
   animator: {fileID: 1250373739076715908}
+  abc: {fileID: -779755105, guid: 10bf37faa2a6cbc41a145e6bb872f545, type: 3}
+  shell: {fileID: 555035967434292427, guid: fa1224ccf5b76cb46a8ec2a7c750d879, type: 3}

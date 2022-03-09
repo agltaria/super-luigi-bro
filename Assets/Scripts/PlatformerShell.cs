@@ -6,7 +6,8 @@ public class PlatformerShell : PlatformerEnemy
 {
     // Start is called before the first frame update
     public bool isMoving = false;
-    Animator animator;
+    [SerializeField] GameObject koopa;
+    [SerializeField] Animator animator;
 
     [SerializeField] float timer = 8f;
 
@@ -18,11 +19,17 @@ public class PlatformerShell : PlatformerEnemy
             timer -= Time.deltaTime;
             CurrentDir = 0f;
         }
-        animator.setFloat("Timer", timer);
+        else
+        {
+            timer = 8f;
+        }
+        animator.SetFloat("Timer", timer);
         if (timer < 0f)
         {
-            Destroy(this.collider);
-            //spawn koopa destroy itself
+            Destroy(this.GetComponent<Collider>());
+            Instantiate(koopa, this.transform.position, Quaternion.identity);
+            Debug.Log("timer over");
+            Destroy(this.gameObject);
         }
     }
 
@@ -37,4 +44,5 @@ public class PlatformerShell : PlatformerEnemy
         isMoving = !isMoving;
 
     }
+
 }
