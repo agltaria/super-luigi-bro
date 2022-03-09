@@ -7,7 +7,7 @@ public class ScoreManager : MonoBehaviour
 {
     public static int displayScore = 0;
     public UnityEvent scoreChanged = new UnityEvent();
-
+    public static int topScore = 999999;
     [SerializeField] private int _currentScore;
 
     public int currentScore
