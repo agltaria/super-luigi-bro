@@ -7,7 +7,6 @@ TagManager:
   - Coin
   - FireBall
   - PowerUp
-  - Enemy
   layers:
   - Default
   - TransparentFX

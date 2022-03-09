@@ -29,10 +29,7 @@ public class PowerUpMovement : MonoBehaviour
             
         if (wallHit.collider != null)
         {
-            if (wallHit.collider.gameObject.tag != "Player")
-            {
-                movingLeft = !movingLeft;
-            }
+            movingLeft = !movingLeft;
         }
 
         transform.position += (Vector3) Direction * moveSpeed * Time.fixedDeltaTime;

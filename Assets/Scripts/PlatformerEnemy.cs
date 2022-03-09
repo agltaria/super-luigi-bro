@@ -34,9 +34,9 @@ public class PlatformerEnemy : PlatformerPhysics
 
     }
 
-    protected override void HitWall(int direction, RaycastHit2D hit)
+    protected override void HitWall(int direction)
     {
-        if ((direction == 2 || direction == 3) && (hit.collider.gameObject.tag == "Untagged" || hit.collider.gameObject.tag == "Enemy" || hit.collider.gameObject.tag == "PowerUp"))
+        if (direction == 2 || direction == 3)
         {
             CurrentDir *= -1f;
         }

@@ -31,7 +31,7 @@ namespace Blocks
         }
 
         [ContextMenu("Trigger")]
-        public override void Trigger()
+        protected override void Trigger()
         {
             if (coinsSpawned >= numberOfCoins - 1)
             {

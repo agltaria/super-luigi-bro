@@ -19,7 +19,7 @@ namespace Blocks
         }
 
         [ContextMenu("Trigger")]
-        public override void Trigger()
+        protected override void Trigger()
         {
             if (PlatformerPlayer.currentForm is not (PlatformerPlayer.MarioForm.Big or PlatformerPlayer.MarioForm.Fire)) return;
             

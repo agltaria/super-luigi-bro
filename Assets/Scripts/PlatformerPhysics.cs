@@ -50,8 +50,8 @@ public class PlatformerPhysics : MonoBehaviour
     {
         float distance = move.magnitude;
 
-        //if (distance > minimumDistance)
-        //{
+        if (distance > minimumDistance)
+        {
             int count = rigidbody.Cast(move, contactFilter, hitBuffer, distance + collisionBuffer);
 
             for (int i = 0; i < count; i++)
@@ -80,7 +80,7 @@ public class PlatformerPhysics : MonoBehaviour
                     float modifiedDistance = hitBuffer[i].distance - collisionBuffer;
                     if (distance > modifiedDistance) distance = modifiedDistance;
                 }
-            //}
+            }
         }
 
         // Apply calculated physics

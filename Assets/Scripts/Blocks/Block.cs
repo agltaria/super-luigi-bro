@@ -17,7 +17,7 @@ namespace Blocks
 
         protected virtual void Start() { }
 
-        public virtual void Trigger() { }
+        protected virtual void Trigger() { }
 
         protected void Bump()
         {
