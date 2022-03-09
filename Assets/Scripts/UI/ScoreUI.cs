@@ -26,6 +26,7 @@ public class ScoreUI : MonoBehaviour
 
     private void OnScoreChanged()
     {
-        text.text = string.Format("Mario" + "\n" + scoreManager.currentScore.ToString("000000"));//timer.CurrentTime.ToString("000");
+        int displayScore = ScoreManager.displayScore;
+        text.text = string.Format("Mario" + "\n" + displayScore.ToString("000000"));//timer.CurrentTime.ToString("000");
     }
 }
