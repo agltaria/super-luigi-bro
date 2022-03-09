@@ -43,7 +43,7 @@ namespace DefaultNamespace
 
             StopTimer();
 
-            // TODO: Kill the player
+            PlayerDeath.Instance.Die();
         }
         
         public void ResetTimer()

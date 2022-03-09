@@ -22,14 +22,26 @@ namespace DefaultNamespace
         private SpriteRenderer spriteRenderer;
 
         private bool trigger;
+
+        public static PlayerDeath Instance;
         
         protected void Awake()
         {
-            collider = GetComponent<BoxCollider2D>();
-            playerMovement = GetComponent<PlatformerPlayer>();
-            animator = GetComponent<Animator>();
-            rigidbody = GetComponent<Rigidbody2D>();
-            spriteRenderer = GetComponent<SpriteRenderer>();
+            if (Instance == null)
+            {
+                Instance = this;
+                
+                collider = GetComponent<BoxCollider2D>();
+                playerMovement = GetComponent<PlatformerPlayer>();
+                animator = GetComponent<Animator>();
+                rigidbody = GetComponent<Rigidbody2D>();
+                spriteRenderer = GetComponent<SpriteRenderer>();
+            }
+            else
+            {
+                Debug.LogWarning($"More than one {nameof(PlayerDeath)}.");
+                enabled = false;
+            }
         }
 
         private void FixedUpdate()
