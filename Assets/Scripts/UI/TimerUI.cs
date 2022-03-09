@@ -16,7 +16,7 @@ namespace UI
         private void Awake()
         {
             timer.timeChanged.AddListener(OnTimeChanged);
-
+            text.text = "Time";
             //text = GetComponent<TextMeshProUGUI>();
         }
         private void Update()

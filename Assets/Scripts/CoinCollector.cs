@@ -15,6 +15,7 @@ public class CoinCollector : MonoBehaviour
         if (!col.CompareTag("Coin")) return;
         
         coinManager.AddCoin();
+        
             
         Destroy(col.gameObject);
     }

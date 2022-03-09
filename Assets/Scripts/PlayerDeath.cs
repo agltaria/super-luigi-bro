@@ -46,6 +46,7 @@ namespace DefaultNamespace
         public void Die()
         {
             // Debug.Log("die");
+            OSTManager.ostManager.PlayDie();
             StartCoroutine(DeathSequence());
         }
 
