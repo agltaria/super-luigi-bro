@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using UnityEditor.Animations;
 using UnityEngine;
 
 namespace DefaultNamespace
@@ -18,7 +17,6 @@ namespace DefaultNamespace
         private new BoxCollider2D collider;
         private PlatformerPlayer playerMovement;
         private Animator animator;
-        private new Rigidbody2D rigidbody;
         private SpriteRenderer spriteRenderer;
 
         private bool trigger;
@@ -34,7 +32,6 @@ namespace DefaultNamespace
                 collider = GetComponent<BoxCollider2D>();
                 playerMovement = GetComponent<PlatformerPlayer>();
                 animator = GetComponent<Animator>();
-                rigidbody = GetComponent<Rigidbody2D>();
                 spriteRenderer = GetComponent<SpriteRenderer>();
             }
             else
@@ -42,15 +39,6 @@ namespace DefaultNamespace
                 Debug.LogWarning($"More than one {nameof(PlayerDeath)}.");
                 enabled = false;
             }
-        }
-
-        private void FixedUpdate()
-        {
-            if (!trigger) return;
-            
-            rigidbody.AddForce(jumpForce * Vector2.up);
-
-            trigger = false;
         }
 
         [ContextMenu("Die")]
@@ -64,6 +52,7 @@ namespace DefaultNamespace
             playerMovement.enabled = false;
             animator.enabled = false;
             collider.enabled = false;
+            Time.timeScale = 0;
             
             switch (PlatformerPlayer.CurrentForm)
             {
@@ -78,13 +67,18 @@ namespace DefaultNamespace
                     throw new ArgumentOutOfRangeException();
             }
 
-            yield return new WaitForSeconds(waitBeforeJump);
-            
-            rigidbody.bodyType = RigidbodyType2D.Dynamic;
-            rigidbody.gravityScale = jumpGravity;
-            trigger = true;
+            yield return new WaitForSecondsRealtime(waitBeforeJump);
 
-            yield return new WaitForSeconds(waitBeforeRestart);
+            float timer = 0;
+            float speed = jumpForce;
+
+            while (timer < waitBeforeRestart)
+            {
+                speed += -9.8f * jumpGravity * Time.unscaledDeltaTime;
+                transform.position += Vector3.up * speed * Time.unscaledDeltaTime;
+                timer += Time.unscaledDeltaTime;
+                yield return null;
+            }
 
             // TODO: Restart level
         }

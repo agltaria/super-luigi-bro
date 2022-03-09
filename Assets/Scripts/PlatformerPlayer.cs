@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEditor.Animations;
 using UnityEngine.InputSystem;
 using Blocks;
+using DefaultNamespace;
 
 public class PlatformerPlayer : PlatformerPhysics
 {
@@ -387,7 +388,7 @@ public class PlatformerPlayer : PlatformerPhysics
             }
             else
             {
-                // Call game over transisition
+                PlayerDeath.Instance.Die();
             }
         }
 
