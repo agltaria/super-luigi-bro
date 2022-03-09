@@ -1,11 +1,15 @@
-﻿using UnityEngine;
+﻿using DefaultNamespace;
+using UnityEngine;
 
 namespace Blocks
 {
     public class BrickBlock : Block
     {
+        [SerializeField] private BrickDebris brickDebris;
+        [SerializeField] private int breakingScore;
+        
         private SpriteRenderer spriteRenderer;
-        private Collider2D collider;
+        private new Collider2D collider;
 
         protected override void Awake()
         {
@@ -16,14 +20,18 @@ namespace Blocks
         }
 
         [ContextMenu("Trigger")]
-        protected override void Trigger()
+        public override void Trigger()
         {
-            // TODO: Check if mario is big
+            base.Trigger();
+            
+            if (PlatformerPlayer.CurrentForm is not (PlatformerPlayer.MarioForm.Big or PlatformerPlayer.MarioForm.Fire)) return;
             
             spriteRenderer.enabled = false;
             collider.enabled = false;
             
-            // TODO: Spawn brick particles
+            ScoreManager.Instance.AddScore(breakingScore);
+
+            brickDebris.Trigger();
         }
     }
 }

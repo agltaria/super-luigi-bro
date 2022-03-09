@@ -5,11 +5,14 @@ TagManager:
   serializedVersion: 2
   tags:
   - Coin
+  - FireBall
+  - PowerUp
+  - Enemy
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Mario
   - Water
   - UI
   - 

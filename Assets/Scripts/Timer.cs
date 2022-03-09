@@ -16,7 +16,7 @@ namespace DefaultNamespace
         public float CurrentTime
         {
             get => _currentTime;
-            private set
+            set
             {
                 _currentTime = value;
                 timeChanged.Invoke();
@@ -43,7 +43,7 @@ namespace DefaultNamespace
 
             StopTimer();
 
-            // TODO: Kill the player
+            PlayerDeath.Instance.Die();
         }
         
         public void ResetTimer()

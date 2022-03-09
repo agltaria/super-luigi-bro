@@ -44,6 +44,8 @@ namespace DefaultNamespace
         public void AddCoin()
         {
             Coins++;
+            
+            ScoreManager.Instance.AddScore(200);
 
             if (Coins >= coinsForOneUp)
             {

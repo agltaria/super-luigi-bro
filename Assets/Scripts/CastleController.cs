@@ -1,20 +1,55 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections;
+using UnityEngine;
 
 namespace DefaultNamespace
 {
+    [RequireComponent(typeof(Animator))]
     public class CastleController : MonoBehaviour
     {
-        private void OnTriggerEnter2D(Collider2D col)
+        [SerializeField] private float levelEndWait;
+        [SerializeField] private Timer timer;
+        [SerializeField] private float timerDrainSecondDuration;
+        [SerializeField] private int scorePerSecond;
+
+        private Animator animator;
+        
+        private static readonly int RaiseFlag = Animator.StringToHash("raiseFlag");
+
+        private void Awake()
         {
-            // TODO: Disable player input
-            // TODO: Hide player sprite
-            // TODO: Start converting time to score
+            animator = GetComponent<Animator>();
         }
 
-        private void OnTimeConversionComplete()
+        private void OnTriggerEnter2D(Collider2D col)
         {
-            // TODO: Raise the flag
-            // TODO: Wait for a few seconds
+            if (!col.CompareTag("Player")) return;
+            
+            col.gameObject.SetActive(false);
+
+            StartCoroutine(EndSequence());
+        }
+
+        private IEnumerator EndSequence()
+        {
+            while (timer.CurrentTime > 0)
+            {
+                timer.CurrentTime -= 1;
+
+                if (timer.CurrentTime < 0)
+                {
+                    timer.CurrentTime = 0;
+                }
+                
+                ScoreManager.Instance.AddScore(scorePerSecond);
+                
+                yield return new WaitForSeconds(timerDrainSecondDuration);
+            }
+            
+            animator.SetTrigger(RaiseFlag);
+            
+            yield return new WaitForSeconds(levelEndWait);
+            
             // TODO: End the level
         }
     }

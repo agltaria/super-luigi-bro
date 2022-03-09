@@ -13,7 +13,7 @@ public class PowerUpMovement : MonoBehaviour
     [SerializeField] private float jumpCooldown;
     
     private bool movingLeft;
-    private Rigidbody2D rigidbody;
+    private new Rigidbody2D rigidbody;
     private float timeSinceLastJump;
 
     private void Awake()
@@ -29,7 +29,10 @@ public class PowerUpMovement : MonoBehaviour
             
         if (wallHit.collider != null)
         {
-            movingLeft = !movingLeft;
+            if (wallHit.collider.gameObject.tag != "Player")
+            {
+                movingLeft = !movingLeft;
+            }
         }
 
         transform.position += (Vector3) Direction * moveSpeed * Time.fixedDeltaTime;

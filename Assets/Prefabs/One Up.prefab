@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1020008543236761030}
   - component: {fileID: 6794906162367733436}
   - component: {fileID: 6388218658023910315}
+  - component: {fileID: -4042524749403907500}
   m_Layer: 2
   m_Name: One Up
   m_TagString: Untagged
@@ -75,7 +76,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_Sprite: {fileID: 686919684, guid: 8f109ef84926d814bb557a23a366e6dc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -127,6 +128,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 3
   wallCheckDistance: 0.5
+  jumping: 0
+  jumpForce: 0
+  jumpCooldown: 0
 --- !u!50 &6388218658023910315
 Rigidbody2D:
   serializedVersion: 4
@@ -148,3 +152,16 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &-4042524749403907500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1844002058148497472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2045ab9524d078b41be33bedefa30b56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerUpType: 3
