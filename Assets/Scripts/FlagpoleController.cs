@@ -34,8 +34,16 @@ namespace DefaultNamespace
 
         private void Update()
         {
-            Slide(playerTransform, ref playerSliding, () => { });
-            Slide(flag, ref flagSliding, OnFlagSlideComplete);
+            Slide(playerTransform, ref playerSliding, () =>
+            {
+                if (!flagSliding)
+                    OnFlagSlideComplete();
+            });
+            Slide(flag, ref flagSliding, () =>
+            {
+                if (!playerSliding)
+                    OnFlagSlideComplete();
+            });
         }
 
         private void OnTriggerEnter2D(Collider2D other)
