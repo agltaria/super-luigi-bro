@@ -24,7 +24,7 @@ public class PlatformerShell : PlatformerEnemy
             timer = 8f;
             if (!spr.isVisible)
             {
-                Debug.Log("MY FINAL MESSAGE");
+                // Debug.Log("MY FINAL MESSAGE");
                 Destroy(this.gameObject);
             }
         }
@@ -33,7 +33,7 @@ public class PlatformerShell : PlatformerEnemy
         {
             Destroy(this.GetComponent<Collider>());
             Instantiate(koopa, this.transform.position + new Vector3(0f, 0.131993f, 0f), Quaternion.identity);
-            Debug.Log("timer over");
+            // Debug.Log("timer over");
             Destroy(this.gameObject);
         }
 
@@ -42,17 +42,17 @@ public class PlatformerShell : PlatformerEnemy
     void Start()
     {
         CurrentDir = 0f;
-        Debug.Log("IVE BEEN BIRTHED");
+        // Debug.Log("IVE BEEN BIRTHED");
     }
 
     public override void OnDeath(bool stomped, float dir)
     {
-        if (!stomped)
+        if (!stomped && !isMoving)
         {
             CurrentDir = dir;
             isMoving = true;
         }
-        else
+        else if (stomped)
         {
             CurrentDir = 0f;
             isMoving = false;
@@ -66,7 +66,7 @@ public class PlatformerShell : PlatformerEnemy
             PlatformerEnemy enemy = hit.collider.gameObject.GetComponent<PlatformerEnemy>();
             enemy.OnDeath(false, CurrentDir);
         }
-        else if ((direction == 2 || direction == 3))
+        else if ((direction == 2 || direction == 3) && !(hit.collider.gameObject.tag == "Player"))
         {
 
             CurrentDir *= -1f;
