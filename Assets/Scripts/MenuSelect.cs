@@ -66,23 +66,23 @@ public class MenuSelect : MonoBehaviour, IPointerClickHandler
 
     public void OnMove(InputValue value)
     {
-        if (Mathf.Abs(value.Get<Vector2>().y) > 0.1)
-        {
-            if (!is1P)
-            {
-                cursor.transform.localPosition = cursor.transform.localPosition + new Vector3(0f, 16f);
-                is1P = true;
-            }
-            else if (is1P)
-            {
-                cursor.transform.localPosition = cursor.transform.localPosition + new Vector3(0f, -16f);
-                is1P = false;
-            }
-        }
+        //if (Mathf.Abs(value.Get<Vector2>().y) > 0.1)
+        //{
+        //    if (!is1P)
+        //    {
+        //        cursor.transform.localPosition = cursor.transform.localPosition + new Vector3(0f, 16f);
+        //        is1P = true;
+        //    }
+        //    else if (is1P)
+        //    {
+        //        cursor.transform.localPosition = cursor.transform.localPosition + new Vector3(0f, -16f);
+        //        is1P = false;
+        //    }
+        //}
     }
 
     public void OnJump(InputValue value)
     {
-        SceneManager.LoadScene(1);
+        SelectPlayer1();
     }
 }
