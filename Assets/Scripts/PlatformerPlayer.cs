@@ -363,9 +363,9 @@ public class PlatformerPlayer : PlatformerPhysics
             {
                 if (!shell.isMoving)
                 {
-                    enemy.OnDeath(false, moveInput.x / Math.Abs(moveInput.x));
+                    enemy.OnDeath(false, velocity.x / Math.Abs(velocity.x));
                     isVulnerable = true;
-                    vulnerabilityTimer = 0.05f;
+                    vulnerabilityTimer = 0.1f;
                     notAShell = false;
                 }
             }
@@ -374,7 +374,7 @@ public class PlatformerPlayer : PlatformerPhysics
                 if (isInvincible)
                 {
                     // Hurt enemy
-                    enemy.OnDeath(false, moveInput.x / Math.Abs(moveInput.x));
+                    enemy.OnDeath(false, velocity.x / Math.Abs(velocity.x));
                 }
                 else if (isVulnerable)
                 {
