@@ -21,7 +21,7 @@ namespace Blocks
         [ContextMenu("Trigger")]
         protected override void Trigger()
         {
-            if (PlatformerPlayer.currentForm is not (PlatformerPlayer.MarioForm.Big or PlatformerPlayer.MarioForm.Fire)) return;
+            if (PlatformerPlayer.CurrentForm is not (PlatformerPlayer.MarioForm.Big or PlatformerPlayer.MarioForm.Fire)) return;
             
             spriteRenderer.enabled = false;
             collider.enabled = false;

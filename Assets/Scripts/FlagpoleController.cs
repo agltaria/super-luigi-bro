@@ -39,7 +39,7 @@ namespace DefaultNamespace
 
             playerMovement.enabled = false;
 
-            switch (PlatformerPlayer.currentForm)
+            switch (PlatformerPlayer.CurrentForm)
             {
                 case PlatformerPlayer.MarioForm.Small:
                     playerAnimator.runtimeAnimatorController = smallMarioAnimatorController;
