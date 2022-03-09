@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class MenuSelect : MonoBehaviour
+public class MenuSelect : MonoBehaviour, IPointerClickHandler
 {
     // public bool is1P = true;
     // public static bool isPlay = false;
@@ -43,15 +44,23 @@ public class MenuSelect : MonoBehaviour
     // }
 
 
-    public void SelectPlayer1()
+    public async void SelectPlayer1()
     {
         if (PlayerPrefs.HasKey("MarioLives"))
             PlayerPrefs.DeleteKey("MarioLives");
         
         if (PlayerPrefs.HasKey("CheckpointKey"))
             PlayerPrefs.DeleteKey("CheckpointKey");
-        
-        SceneManager.LoadSceneAsync("Level 1-1");
-        SceneManager.LoadSceneAsync("LevelStartScreen", LoadSceneMode.Additive);
+
+        SceneManager.LoadScene("Level 1-1");
+        SceneManager.LoadScene("LevelStartScreen", LoadSceneMode.Additive);
+
+    }
+
+  
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        SelectPlayer1();
     }
 }

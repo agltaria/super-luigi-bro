@@ -17,13 +17,13 @@ namespace UI
         private void Awake()
         {
             coinManager.coinsChanged.AddListener(OnCoinsChanged);
+            text.text = coinManager.Coins.ToString("00"); //testing, comment this out later
 
             //text = GetComponent<TextMeshProUGUI>();
             //text = GetComponent<Text>();
         }
         private void Update()
         {
-            text.text = coinManager.Coins.ToString("00"); //testing, comment this out later
         }
         private void OnCoinsChanged()
         {

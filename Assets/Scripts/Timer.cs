@@ -44,6 +44,7 @@ namespace DefaultNamespace
             StopTimer();
 
             PlayerDeath.Instance.Die();
+            ResetTimer();
         }
         
         public void ResetTimer()

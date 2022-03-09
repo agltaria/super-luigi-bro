@@ -503,6 +503,7 @@ public class PlatformerPlayer : PlatformerPhysics
         float timer = 0;
         float waitBeforeRestart = 1f;
 
+        PlaySound(4);
         while (timer < waitBeforeRestart)
         {
             transform.position += Vector3.up * -0.3f * Time.unscaledDeltaTime;
@@ -520,6 +521,7 @@ public class PlatformerPlayer : PlatformerPhysics
 
        float timer = 0;
        float waitBeforeRestart = 1f;
+       PlaySound(4);
 
        while (timer < waitBeforeRestart)
        {
@@ -540,6 +542,7 @@ public class PlatformerPlayer : PlatformerPhysics
         Debug.Log("started this");
        float timer = 0;
        float waitBeforeRestart = 0.5f;
+       PlaySound(4);
 
        while (timer < waitBeforeRestart)
        {

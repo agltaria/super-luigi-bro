@@ -32,25 +32,27 @@ namespace DefaultNamespace
             else
             {
                 Debug.LogWarning($"More than one {nameof(CoinManager)}.");
-                enabled = false;
+                DestroyImmediate(this.gameObject);
             }
         }
 
         private void Start()
         {
             Coins = 0;
+            coinsChanged.Invoke();
+
         }
 
         public void AddCoin()
         {
             Coins++;
+            coinsChanged.Invoke();
             
             ScoreManager.Instance.AddScore(200);
 
             if (Coins >= coinsForOneUp)
             {
                 Coins -= coinsForOneUp;
-                
                 PlayerPrefs.SetInt("MarioLives", PlayerPrefs.GetInt("MarioLives",1));
             }
         }

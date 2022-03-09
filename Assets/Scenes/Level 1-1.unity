@@ -951,23 +951,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 25
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1124949497 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2303954155651297168, guid: 9e05f8a292ac5a24aac12d9526e716dd, type: 3}
-  m_PrefabInstance: {fileID: 2303954156708967017}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1124949506
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1124949497}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14b554bface7e9d47a5cdcc1880f8513, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1153881786
 GameObject:
   m_ObjectHideFlags: 0
@@ -1878,9 +1861,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2303954155651297173, guid: 9e05f8a292ac5a24aac12d9526e716dd, type: 3}
-      propertyPath: m_Camera
-      value: 
+    - target: {fileID: 2303954155651297175, guid: 9e05f8a292ac5a24aac12d9526e716dd, type: 3}
+      propertyPath: coinsForOneUp
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9e05f8a292ac5a24aac12d9526e716dd, type: 3}
