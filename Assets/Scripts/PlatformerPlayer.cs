@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 public class PlatformerPlayer : PlatformerPhysics
 {
     public enum MarioForm { Small, Big, Fire }
-    public MarioForm currentForm;
+    public static MarioForm currentForm;
     public int fireBalls = 2;
     [SerializeField] GameObject fireBall;
 
