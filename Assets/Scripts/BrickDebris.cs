@@ -49,7 +49,6 @@ namespace DefaultNamespace
 
         private IEnumerator Destroy()
         {
-            AudioManager.audioManager.playSound(3);
             yield return new WaitForSeconds(destroyAfter);
 
             gameObject.SetActive(false);

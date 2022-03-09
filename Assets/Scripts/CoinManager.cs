@@ -46,7 +46,6 @@ namespace DefaultNamespace
         public void AddCoin()
         {
             Coins++;
-            AudioManager.audioManager.playSound(2);
             coinsChanged.Invoke();
             
             ScoreManager.Instance.AddScore(200);

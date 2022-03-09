@@ -43,9 +43,8 @@ namespace DefaultNamespace
                 }
                 
                 ScoreManager.Instance.AddScore(scorePerSecond);
-                AudioManager.audioManager.playPoints();
-                yield return new WaitForSeconds(timerDrainSecondDuration);
                 
+                yield return new WaitForSeconds(timerDrainSecondDuration);
             }
             
             animator.SetTrigger(RaiseFlag);
@@ -54,12 +53,5 @@ namespace DefaultNamespace
 
             SceneManager.LoadScene("TitleScreen");
         }
-
-        private void Points()
-        {
-            AudioManager.audioManager.playPoints();
-        }
     }
-
-   
 }
