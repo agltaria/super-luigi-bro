@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.Events;
 using UnityEngine;
 
@@ -18,22 +19,8 @@ public class ScoreManager : MonoBehaviour
             scoreChanged.Invoke();
         }
     }
-    
-    public static ScoreManager Instance;
 
-    protected void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Debug.LogWarning($"More than one {nameof(ScoreManager)}.");
-            enabled = false;
-        }
-    }
-
+   
     // Start is called before the first frame update
     void Start()
     {
@@ -43,15 +30,6 @@ public class ScoreManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Debug.LogWarning($"More than one {nameof(ScoreManager)}.");
-            enabled = false;
-        }
         //currentScore += 1; //test
     }
 
@@ -74,7 +52,6 @@ public class ScoreManager : MonoBehaviour
             {
                 displayScore++;
             }
-            
             yield return new WaitForSeconds(0.01f); 
         }
     }
