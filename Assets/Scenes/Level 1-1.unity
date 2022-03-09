@@ -417,7 +417,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1165497004447079552, guid: 736ecc69dce7b25408da3678d4b9a93b, type: 3}
       propertyPath: m_SortingOrder
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7706767765409689122, guid: 736ecc69dce7b25408da3678d4b9a93b, type: 3}
       propertyPath: m_Name
@@ -1190,6 +1190,30 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 5807136196997372491, guid: 3d1ed136990f41f408fe0e7d25c53178, type: 3}
+      propertyPath: isProgressive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5807136196997372491, guid: 3d1ed136990f41f408fe0e7d25c53178, type: 3}
+      propertyPath: progressivePowerUpPrefab
+      value: 
+      objectReference: {fileID: 176894314549094745, guid: 305a3eef4ee752b4cad054879e7170c2, type: 3}
+    - target: {fileID: 5807136197240633762, guid: 3d1ed136990f41f408fe0e7d25c53178, type: 3}
+      propertyPath: isProgressive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5807136197240633762, guid: 3d1ed136990f41f408fe0e7d25c53178, type: 3}
+      propertyPath: progressivePowerUpPrefab
+      value: 
+      objectReference: {fileID: 176894314549094745, guid: 305a3eef4ee752b4cad054879e7170c2, type: 3}
+    - target: {fileID: 5807136197773932795, guid: 3d1ed136990f41f408fe0e7d25c53178, type: 3}
+      propertyPath: isProgressive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5807136197773932795, guid: 3d1ed136990f41f408fe0e7d25c53178, type: 3}
+      propertyPath: progressivePowerUpPrefab
+      value: 
+      objectReference: {fileID: 176894314549094745, guid: 305a3eef4ee752b4cad054879e7170c2, type: 3}
     - target: {fileID: 5807136198652155323, guid: 3d1ed136990f41f408fe0e7d25c53178, type: 3}
       propertyPath: m_Name
       value: Grid with Blocks
