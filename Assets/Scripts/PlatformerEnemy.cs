@@ -75,6 +75,7 @@ public class PlatformerEnemy : PlatformerPhysics
         velocity = new Vector2(velocity.x, 0);
         if (!stomped)
         {
+            //PLAY NOT STOMPED DED SOUND
             gravity.y = -15f;
             Speed = 1.5f;
             CurrentDir = dir;
