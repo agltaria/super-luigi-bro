@@ -6,7 +6,7 @@ public class AudioManager : MonoBehaviour
 {
     [SerializeField] AudioSource audioPlayer;
     [SerializeField] AudioClip[] clips;
-    private static AudioManager audioManager;
+    public static AudioManager audioManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,68 +27,16 @@ public class AudioManager : MonoBehaviour
         
     }
 
-    public void playSmallJump()
+    public void playSound(int x)
     {
-        audioPlayer.PlayOneShot(clips[0]);
+        if (!audioPlayer.isPlaying)
+            audioPlayer.clip = clips[x];
+            audioPlayer.Play();
     }
 
-    public void playSuperJump()
+    public void playFlagpole()
     {
-        audioPlayer.PlayOneShot(clips[1]);
-    }
-
-    public void playCoin()
-    {
-        audioPlayer.PlayOneShot(clips[2]);
-    }
-
-    public void playBreakBlock()
-    {
-        audioPlayer.PlayOneShot(clips[3]);
-    }
-
-    public void playBump()
-    {
-        audioPlayer.PlayOneShot(clips[4]);
-    }
-
-    public void playPowerAppear()
-    {
-        audioPlayer.PlayOneShot(clips[5]);
-    }
-
-    public void playPowerup()
-    {
-        audioPlayer.PlayOneShot(clips[6]);
-    }
-
-    public void play1Up()
-    {
-        audioPlayer.PlayOneShot(clips[7]);
-    }
-
-    public void playStomp()
-    {
-        audioPlayer.PlayOneShot(clips[8]);
-    }
-
-    public void playFireball()
-    {
-        audioPlayer.PlayOneShot(clips[9]);
-    }
-
-    public void playPipe()
-    {
-        audioPlayer.PlayOneShot(clips[10]);
-    }
-
-    public void playFlag()
-    {
-        audioPlayer.PlayOneShot(clips[11]);
-    }
-
-    public void playDie()
-    {
-        audioPlayer.PlayOneShot(clips[13]);
+        if (!audioPlayer.isPlaying)
+            audioPlayer.PlayOneShot(clips[11]);
     }
 }

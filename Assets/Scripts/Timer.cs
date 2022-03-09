@@ -42,8 +42,8 @@ namespace DefaultNamespace
             CurrentTime = 0;
 
             StopTimer();
-
-            PlayerDeath.Instance.Die();
+            if(PlayerDeath.Instance)
+                PlayerDeath.Instance.Die();
         }
         
         public void ResetTimer()
