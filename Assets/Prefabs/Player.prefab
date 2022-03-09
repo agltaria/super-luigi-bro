@@ -368,6 +368,7 @@ MonoBehaviour:
   gravity: {x: 0, y: -55}
   minimumDistance: 0.001
   collisionBuffer: 0.01
+  isBoundByCamera: 0
   fireBalls: 2
   fireBall: {fileID: 8674291918916307418, guid: d1c7123a56ea3fb40b7a05d04b00c885, type: 3}
   maxSpeed: 6
@@ -375,7 +376,7 @@ MonoBehaviour:
   deceleration: 12
   runInfluence: 1.55
   jumpForce: 15.5
-  bounceForce: 7.5
+  bounceForce: 10
   releasedJumpInfluence: 0.6
   slowFallInfluence: 0.5
   jumpSpeedInfluence: 0.1

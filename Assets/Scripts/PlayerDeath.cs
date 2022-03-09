@@ -36,7 +36,7 @@ namespace DefaultNamespace
             }
             else
             {
-                Debug.LogWarning($"More than one {nameof(PlayerDeath)}.");
+                // Debug.LogWarning($"More than one {nameof(PlayerDeath)}.");
                 enabled = false;
             }
         }
@@ -44,7 +44,7 @@ namespace DefaultNamespace
         [ContextMenu("Die")]
         public void Die()
         {
-            Debug.Log("die");
+            // Debug.Log("die");
             StartCoroutine(DeathSequence());
         }
 

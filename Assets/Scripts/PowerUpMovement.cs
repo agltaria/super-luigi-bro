@@ -29,7 +29,7 @@ public class PowerUpMovement : MonoBehaviour
             
         if (wallHit.collider != null)
         {
-            if (wallHit.collider.gameObject.tag != "Player")
+            if (wallHit.collider.gameObject.tag != "Player" && wallHit.collider.gameObject.tag != "MainCamera")
             {
                 movingLeft = !movingLeft;
             }
