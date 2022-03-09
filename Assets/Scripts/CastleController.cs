@@ -42,8 +42,9 @@ namespace DefaultNamespace
                 }
                 
                 ScoreManager.Instance.AddScore(scorePerSecond);
-                
+                AudioManager.audioManager.playPoints();
                 yield return new WaitForSeconds(timerDrainSecondDuration);
+                
             }
             
             animator.SetTrigger(RaiseFlag);
@@ -52,5 +53,12 @@ namespace DefaultNamespace
             
             // TODO: End the level
         }
+
+        private void Points()
+        {
+            AudioManager.audioManager.playPoints();
+        }
     }
+
+   
 }

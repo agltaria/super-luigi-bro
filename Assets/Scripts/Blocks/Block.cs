@@ -39,7 +39,9 @@ namespace Blocks
 
         protected void Bump()
         {
+            AudioManager.audioManager.playExtra(4);
             animator.SetTrigger(BumpAnimParam);
+            
         }
         
         // Called by the end of the bump animation
