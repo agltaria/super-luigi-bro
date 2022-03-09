@@ -170,9 +170,10 @@ MonoBehaviour:
   gravity: {x: 0, y: -9.8}
   minimumDistance: 0.001
   collisionBuffer: 0.01
+  isBoundByCamera: 0
   CurrentDir: -1
   Boost: 0
-  Speed: 3
+  Speed: 2.5
   flipped: 0
   ScoreValue: 100
   collider: {fileID: 8994102458693652142}
