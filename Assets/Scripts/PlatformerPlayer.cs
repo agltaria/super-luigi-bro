@@ -8,6 +8,11 @@ namespace DefaultNamespace
     [RequireComponent(typeof(BoxCollider2D), typeof(SpriteRenderer), typeof(Animator))]
     public class PlatformerPlayer : PlatformerPhysics
     {
+        bool isInvincible; // Star man
+        float invincibilityTimer;
+        bool isVulnerable; // I-Frames after being hurt
+        float vulnerabilityTimer;
+    
         public enum MarioForm
         {
             Small,
@@ -155,7 +160,8 @@ namespace DefaultNamespace
             powerUpTimer += Time.unscaledDeltaTime;
             powerUpStage += Mathf.FloorToInt(powerUpTimer / 0.1f);
             powerUpTimer %= 0.1f;
-            if (CurrentForm == MarioForm.Big)
+            
+            if (CurrentForm == MarioForm.Small)
             {
                 // Update sprite for mushroom transition
                 switch (powerUpStage)
@@ -165,7 +171,7 @@ namespace DefaultNamespace
                     case 4:
                     case 7:
                     case 10:
-                        spriteRenderer.sprite = powerUpMushroomSprites[0];
+                        spriteRenderer.sprite = powerUpMushroomSprites[2];
                         break;
                     case 1:
                     case 3:
@@ -175,25 +181,44 @@ namespace DefaultNamespace
                         break;
                     case 6:
                     case 9:
-                        spriteRenderer.sprite = powerUpMushroomSprites[2];
+                        spriteRenderer.sprite = powerUpMushroomSprites[0];
                         break;
                     default:
                         powerUpStage = -1;
                         powerUpTimer = 0.0f;
                         Time.timeScale = 1.0f;
                         animator.enabled = true;
+                        spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
                         break;
                 }
             }
-            else if (CurrentForm == MarioForm.Fire)
+            else if (CurrentForm == MarioForm.Big)
             {
                 // Update sprite for flower transition
                 switch (powerUpStage)
                 {
+                    case 0:
+                    case 2:
+                    case 4:
+                    case 7:
+                    case 10:
+                        spriteRenderer.sprite = powerUpFlowerSprites[0];
+                        break;
+                    case 1:
+                    case 3:
+                    case 5:
+                    case 8:
+                        spriteRenderer.sprite = powerUpFlowerSprites[1];
+                        break;
+                    case 6:
+                    case 9:
+                        spriteRenderer.sprite = powerUpFlowerSprites[2];
+                        break;
                     default:
                         powerUpStage = -1;
                         powerUpTimer = 0.0f;
                         Time.timeScale = 1.0f;
+                        animator.enabled = true;
                         break;
                 }
             }
@@ -307,6 +332,15 @@ namespace DefaultNamespace
             //else if (enemy != null)
             //{
             //    // Hurt Mario
+            //    Time.timeScale = 0.0f;
+            //    currentForm = MarioForm.Small;
+            //    powerUpStage = 0;
+            //    powerUpTimer = 0.0f;
+            //    animator.runtimeAnimatorController = animators[0];
+            //    animator.enabled = false;
+            //    collider.offset = smallMarioColliderOffset;
+            //    collider.size = smallMarioColliderScale;
+            //    spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
             //}
         }
 
@@ -341,7 +375,10 @@ namespace DefaultNamespace
                         CurrentForm = MarioForm.Fire;
                         powerUpStage = 0;
                         powerUpTimer = 0.0f;
+                        animator.runtimeAnimatorController = animators[2];
                         animator.enabled = false;
+                        collider.offset = bigMarioColliderOffset;
+                        collider.size = bigMarioColliderScale;
                     }
                     else
                     {

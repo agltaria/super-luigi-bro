@@ -21,7 +21,7 @@ namespace DefaultNamespace
         }
 
         public UnityEvent coinsChanged = new UnityEvent();
-        private int _coins;
+        [SerializeField] private int _coins;
 
         private void Awake()
         {

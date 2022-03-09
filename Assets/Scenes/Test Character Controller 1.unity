@@ -253,7 +253,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 21300000, guid: f33805690d144aa4c9f04ed535f581c7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 057321db6d401814da87cf5aa95ce960, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -9861,11 +9861,15 @@ MonoBehaviour:
   animators:
   - {fileID: 9100000, guid: c39cf79c895d56446a113ff3b75e2132, type: 2}
   - {fileID: 9100000, guid: 70a0691b1b67aa04dada366ec4d9e9d4, type: 2}
+  - {fileID: 9100000, guid: 571959bb7391a074bba980509cd5812e, type: 2}
   powerUpMushroomSprites:
   - {fileID: -711135648, guid: 05972b3fe4a48794babbe45532c70f6b, type: 3}
   - {fileID: 2044956708, guid: 05972b3fe4a48794babbe45532c70f6b, type: 3}
   - {fileID: 2064363903, guid: 05972b3fe4a48794babbe45532c70f6b, type: 3}
-  powerUpFlowerSprites: []
+  powerUpFlowerSprites:
+  - {fileID: 450986381, guid: b577fd0f9a4608a4f951c8ae5d3e7f47, type: 3}
+  - {fileID: 887931670, guid: b577fd0f9a4608a4f951c8ae5d3e7f47, type: 3}
+  - {fileID: -1755920492, guid: b577fd0f9a4608a4f951c8ae5d3e7f47, type: 3}
 --- !u!95 &2001465368
 Animator:
   serializedVersion: 4
