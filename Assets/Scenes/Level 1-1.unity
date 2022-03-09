@@ -180,6 +180,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 60c0e9489e2589d41a8efd711979496b, type: 3}
+--- !u!114 &148362080 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2303954155823821204, guid: 9e05f8a292ac5a24aac12d9526e716dd, type: 3}
+  m_PrefabInstance: {fileID: 2303954156708967017}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cac39c2b7ff465aa5bc021a819f87eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &149971847
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1019,6 +1030,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flagpole
       objectReference: {fileID: 0}
+    - target: {fileID: 4950963792792564564, guid: d0940afd430600a4287760bf938f5042, type: 3}
+      propertyPath: timer
+      value: 
+      objectReference: {fileID: 148362080}
     - target: {fileID: 4950963792792564567, guid: d0940afd430600a4287760bf938f5042, type: 3}
       propertyPath: m_RootOrder
       value: 21

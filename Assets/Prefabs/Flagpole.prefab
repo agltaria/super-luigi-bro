@@ -79,6 +79,17 @@ MonoBehaviour:
   fireMarioAnimatorController: {fileID: 9100000, guid: 1ee2925b75d43924f803a15588d49450, type: 2}
   slideSpeed: 3
   timer: {fileID: 0}
+  scoreZones:
+  - score: 5000
+    minYPos: 4
+  - score: 2000
+    minYPos: 1
+  - score: 800
+    minYPos: -0.5
+  - score: 400
+    minYPos: -3
+  - score: 100
+    minYPos: -4
 --- !u!1 &4950963794435702516
 GameObject:
   m_ObjectHideFlags: 0
