@@ -7,9 +7,9 @@ using UnityEngine.EventSystems;
 
 public class MenuSelect : MonoBehaviour, IPointerClickHandler
 {
-    // public bool is1P = true;
-    // public static bool isPlay = false;
-    // [SerializeField] SpriteRenderer cursor;
+     public bool is1P = true;
+     public static bool isPlay = false;
+     [SerializeField] SpriteRenderer cursor;
     // // Start is called before the first frame update
     // void Start()
     // {
@@ -83,6 +83,6 @@ public class MenuSelect : MonoBehaviour, IPointerClickHandler
 
     public void OnJump(InputValue value)
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
 }
