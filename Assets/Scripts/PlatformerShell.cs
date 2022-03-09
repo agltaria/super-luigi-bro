@@ -47,8 +47,16 @@ public class PlatformerShell : PlatformerEnemy
 
     public override void OnDeath(bool stomped, float dir)
     {
-        CurrentDir = dir;
-        isMoving = !isMoving;
+        if (!stomped)
+        {
+            CurrentDir = dir;
+            isMoving = true;
+        }
+        else
+        {
+            CurrentDir = 0f;
+            isMoving = false;
+        }
 
     }
     protected override void HitWall(int direction, RaycastHit2D hit)
