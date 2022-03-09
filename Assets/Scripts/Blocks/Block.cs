@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Blocks
 {
@@ -9,6 +7,8 @@ namespace Blocks
     {
         private Animator animator;
         private static readonly int BumpAnimParam = Animator.StringToHash("Bump");
+
+        protected bool Triggered;
 
         protected virtual void Awake()
         {

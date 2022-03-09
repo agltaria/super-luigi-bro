@@ -33,6 +33,8 @@ namespace Blocks
         [ContextMenu("Trigger")]
         public override void Trigger()
         {
+            if (Triggered) return;
+            
             if (coinsSpawned >= numberOfCoins - 1)
             {
                 spriteAnimator.enabled = false;
@@ -51,9 +53,9 @@ namespace Blocks
             base.OnBumpComplete();
             
             coinManager.AddCoin();
-            
+
             if (coinsSpawned >= numberOfCoins)
-                enabled = false;
+                Triggered = true;
         }
     }
 }

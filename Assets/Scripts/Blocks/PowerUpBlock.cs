@@ -24,6 +24,8 @@ namespace Blocks
         [ContextMenu("Trigger")]
         public override void Trigger()
         {
+            if (Triggered) return;
+            
             spriteAnimator.enabled = false;
             spriteRenderer.sprite = triggeredSprite;
             
@@ -41,7 +43,7 @@ namespace Blocks
             else
                 blockPowerUp.GetComponent<BlockPowerUp>().powerUpPrefab = powerUpPrefab;
 
-            enabled = false;
+            Triggered = true;
         }
     }
 }
