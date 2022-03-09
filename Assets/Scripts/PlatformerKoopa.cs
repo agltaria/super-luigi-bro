@@ -16,8 +16,9 @@ public class PlatformerKoopa : PlatformerEnemy
         base.OnDeath(stomped, dir);
         if (stomped)
         {
+            Debug.Log("IVE BEEN STOMPED");
             Speed = 0f;
-            Destroy(this.GetComponent<Collider>());
+            //Destroy(this.GetComponent<Collider>());
             Instantiate(shell, this.transform.position, Quaternion.identity);
             Destroy(this.gameObject);
 

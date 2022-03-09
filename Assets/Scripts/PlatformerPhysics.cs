@@ -52,34 +52,34 @@ public class PlatformerPhysics : MonoBehaviour
 
         //if (distance > minimumDistance)
         //{
-            int count = rigidbody.Cast(move, contactFilter, hitBuffer, distance + collisionBuffer);
+        int count = rigidbody.Cast(move, contactFilter, hitBuffer, distance + collisionBuffer);
 
-            for (int i = 0; i < count; i++)
+        for (int i = 0; i < count; i++)
+        {
+            // Clamp momentum based on normal of face you have collided with
+            if (isVertical)
             {
-                // Clamp momentum based on normal of face you have collided with
-                if (isVertical)
-                {
-                    if (hitBuffer[i].normal.y > 0.9f) HitWall(0, hitBuffer[i]);
-                    else if (hitBuffer[i].normal.y < -0.9f) HitWall(1, hitBuffer[i]);
-                }
-                else if (isHorizontal)
-                {
-                    if (hitBuffer[i].normal.x > 0.9f) HitWall(2, hitBuffer[i]);
-                    else if (hitBuffer[i].normal.x < -0.9f) HitWall(3, hitBuffer[i]);
-                }
+                if (hitBuffer[i].normal.y > 0.9f) HitWall(0, hitBuffer[i]);
+                else if (hitBuffer[i].normal.y < -0.9f) HitWall(1, hitBuffer[i]);
+            }
+            else if (isHorizontal)
+            {
+                if (hitBuffer[i].normal.x > 0.9f) HitWall(2, hitBuffer[i]);
+                else if (hitBuffer[i].normal.x < -0.9f) HitWall(3, hitBuffer[i]);
+            }
 
-                Vector2 normal = hitBuffer[i].normal;
+            Vector2 normal = hitBuffer[i].normal;
 
-                if (hitBuffer[i].collider.gameObject.tag == "Untagged")
-                {
-                    // Subtract distance you would clip into object from velocity
-                    float projection = Vector2.Dot(velocity, normal);
-                    if (projection > 0.0f) velocity -= projection * normal;
+            if (hitBuffer[i].collider.gameObject.tag == "Untagged" || hitBuffer[i].collider.gameObject.tag == gameObject.tag)
+            {
+                // Subtract distance you would clip into object from velocity
+                float projection = Vector2.Dot(velocity, normal);
+                if (projection > 0.0f) velocity -= projection * normal;
 
-                    // Use whichever calculated distance is more conservative
-                    float modifiedDistance = hitBuffer[i].distance - collisionBuffer;
-                    if (distance > modifiedDistance) distance = modifiedDistance;
-                }
+                // Use whichever calculated distance is more conservative
+                float modifiedDistance = hitBuffer[i].distance - collisionBuffer;
+                if (distance > modifiedDistance) distance = modifiedDistance;
+            }
             //}
         }
 
@@ -95,7 +95,7 @@ public class PlatformerPhysics : MonoBehaviour
     protected virtual void HitWall(int direction, RaycastHit2D hit) // This functions exists so that additional behaviour can be added by child classes. Directions (of normal) are as follows: 0 up, 1 down, 2 right, 3 left 
     {
         // Cull momentum (and ground, if neccesary) based on normal
-        if (hit.collider.gameObject.tag == "Untagged") 
+        if (hit.collider.gameObject.tag == "Untagged")
         {
             switch (direction)
             {
