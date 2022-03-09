@@ -1,14 +1,24 @@
-﻿using System.Collections;
-using Unity.VisualScripting;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 namespace DefaultNamespace
 {
+    [RequireComponent(typeof(Animator))]
     public class CastleController : MonoBehaviour
     {
         [SerializeField] private float levelEndWait;
         [SerializeField] private Timer timer;
         [SerializeField] private float timerDrainSecondDuration;
+
+        private Animator animator;
+        
+        private static readonly int RaiseFlag = Animator.StringToHash("raiseFlag");
+
+        private void Awake()
+        {
+            animator = GetComponent<Animator>();
+        }
 
         private void OnTriggerEnter2D(Collider2D col)
         {
@@ -35,8 +45,10 @@ namespace DefaultNamespace
                 yield return new WaitForSeconds(timerDrainSecondDuration);
             }
             
-            // TODO: Raise the flag
-            // TODO: Wait for a few seconds
+            animator.SetTrigger(RaiseFlag);
+            
+            yield return new WaitForSeconds(levelEndWait);
+            
             // TODO: End the level
         }
     }
