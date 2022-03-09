@@ -28,10 +28,8 @@ namespace DefaultNamespace
         [SerializeField] private float releasedJumpInfluence = 0.5f;
         [SerializeField] private float slowFallInfluence = 0.5f;
 
-        [SerializeField]
-        private float
-            jumpSpeedInfluence =
-                0.30f; // Jump height is multiplied by 1.0 + (this) * (currentSpeed / maxSpeed), so that you jump higher when running
+        // Jump height is multiplied by 1.0 + (this) * (currentSpeed / maxSpeed), so that you jump higher when running
+        [SerializeField] private float jumpSpeedInfluence = 0.30f;
 
         private SpriteRenderer spriteRenderer;
         private Animator animator;
@@ -130,69 +128,73 @@ namespace DefaultNamespace
             base.Update();
 
             if (gravity != trueGravity && velocity.y < 0.0f && !isGrounded) gravity = trueGravity;
+            
+            AnimateThrow();
+            
+            AnimatePowerUp();
+        }
 
-            // Animate throw
-            if (throwCoolDown > 0.0f)
+        private void AnimateThrow()
+        {
+            if (throwCoolDown <= 0.0f) return;
+            
+            throwCoolDown -= Time.deltaTime;
+            throwSpriteRenderer.flipX = spriteRenderer.flipX;
+
+            if (throwCoolDown > 0.0f) return;
+            
+            spriteMask.enabled = false;
+            throwSpriteRenderer.enabled = false;
+            throwCoolDown = 0.0f;
+        }
+
+        private void AnimatePowerUp()
+        {
+            if (powerUpStage < 0) return;
+            
+            powerUpTimer += Time.unscaledDeltaTime;
+            powerUpStage += Mathf.FloorToInt(powerUpTimer / 0.1f);
+            powerUpTimer %= 0.1f;
+            if (CurrentForm == MarioForm.Big)
             {
-                throwCoolDown -= Time.deltaTime;
-                throwSpriteRenderer.flipX = spriteRenderer.flipX;
-
-                if (throwCoolDown <= 0.0f)
+                // Update sprite for mushroom transition
+                switch (powerUpStage)
                 {
-                    spriteMask.enabled = false;
-                    throwSpriteRenderer.enabled = false;
-                    throwCoolDown = 0.0f;
+                    case 0:
+                    case 2:
+                    case 4:
+                    case 7:
+                    case 10:
+                        spriteRenderer.sprite = powerUpMushroomSprites[0];
+                        break;
+                    case 1:
+                    case 3:
+                    case 5:
+                    case 8:
+                        spriteRenderer.sprite = powerUpMushroomSprites[1];
+                        break;
+                    case 6:
+                    case 9:
+                        spriteRenderer.sprite = powerUpMushroomSprites[2];
+                        break;
+                    default:
+                        powerUpStage = -1;
+                        powerUpTimer = 0.0f;
+                        Time.timeScale = 1.0f;
+                        animator.enabled = true;
+                        break;
                 }
             }
-
-            // Animate power-up
-            if (powerUpStage >= 0)
+            else if (CurrentForm == MarioForm.Fire)
             {
-                powerUpTimer += Time.unscaledDeltaTime;
-                powerUpStage += Mathf.FloorToInt(powerUpTimer / 0.1f);
-                powerUpTimer %= 0.1f;
-                if (CurrentForm == MarioForm.Big)
+                // Update sprite for flower transition
+                switch (powerUpStage)
                 {
-                    // Update sprite for mushroom transition
-                    switch (powerUpStage)
-                    {
-                        case 0:
-                        case 2:
-                        case 4:
-                        case 7:
-                        case 10:
-                            spriteRenderer.sprite = powerUpMushroomSprites[0];
-                            break;
-                        case 1:
-                        case 3:
-                        case 5:
-                        case 8:
-                            spriteRenderer.sprite = powerUpMushroomSprites[1];
-                            break;
-                        case 6:
-                        case 9:
-                            spriteRenderer.sprite = powerUpMushroomSprites[2];
-                            break;
-                        default:
-                            powerUpStage = -1;
-                            powerUpTimer = 0.0f;
-                            Time.timeScale = 1.0f;
-                            animator.enabled = true;
-                            break;
-                    }
-                }
-                else if (CurrentForm == MarioForm.Fire)
-                {
-                    // Update sprite for flower transition
-                    switch (powerUpStage)
-                    {
-                        default:
-                            powerUpStage = -1;
-                            powerUpTimer = 0.0f;
-                            Time.timeScale = 1.0f;
-                            break;
-                    }
-
+                    default:
+                        powerUpStage = -1;
+                        powerUpTimer = 0.0f;
+                        Time.timeScale = 1.0f;
+                        break;
                 }
             }
         }
@@ -308,12 +310,11 @@ namespace DefaultNamespace
             //}
         }
 
-        // Types are as follows: 0 mushroom, 1 fire flower, 2 star, 3 one-up mushroom
-        public void GetPowerUp(int powerUpType) 
+        public void GetPowerUp(PowerUpInfo.PowerUpType powerUpType) 
         {
             switch (powerUpType)
             {
-                case 0: // Mushroom
+                case PowerUpInfo.PowerUpType.Mushroom:
                     if ((int)CurrentForm == 0)
                     {
                         // Power up to big form
@@ -332,7 +333,7 @@ namespace DefaultNamespace
                     }
 
                     break;
-                case 1: // Fire Flower
+                case PowerUpInfo.PowerUpType.FireFlower:
                     if ((int)CurrentForm <= 1)
                     {
                         // Power up to fire form
@@ -348,9 +349,9 @@ namespace DefaultNamespace
                     }
 
                     break;
-                case 2: // Star man
+                case PowerUpInfo.PowerUpType.StarMan:
                     break;
-                case 3: // One-Up mushroom
+                case PowerUpInfo.PowerUpType.OneUpMushroom:
                     // Increment lives
                     break;
                 default:
@@ -364,9 +365,16 @@ namespace DefaultNamespace
             
             if (powerUp == null) return;
             
-            GetPowerUp((int)powerUp.powerUpType);
+            GetPowerUp(powerUp.powerUpType);
             Destroy(powerUp.gameObject);
             Debug.Log("Collected power of type " + (int)powerUp.powerUpType);
+        }
+
+        public void Die()
+        {
+            // TODO: Disable controls
+            // TODO: Play death animation
+            // TODO: Restart level
         }
     }
 }
