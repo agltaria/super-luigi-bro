@@ -27,7 +27,7 @@ public class PlatformerShell : PlatformerEnemy
         if (timer < 0f)
         {
             Destroy(this.GetComponent<Collider>());
-            Instantiate(koopa, this.transform.position, Quaternion.identity);
+            Instantiate(koopa, this.transform.position + new Vector3(0f, 0.131993f, 0f), Quaternion.identity);
             Debug.Log("timer over");
             Destroy(this.gameObject);
         }
