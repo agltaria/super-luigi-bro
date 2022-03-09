@@ -60,17 +60,10 @@ public class PlatformerShell : PlatformerEnemy
         }
         else if ((direction == 2 || direction == 3))
         {
-            if (hit.collider.gameObject.tag == "Player")
-            {
-                CurrentDir = direction;
-                isMoving = true;
-            }
-            else
-            {
-                CurrentDir *= -1f;
-                flipped = !flipped;
-                spr.flipX = flipped;
-            }
+
+            CurrentDir *= -1f;
+            flipped = !flipped;
+            spr.flipX = flipped;
         }
     }
 
