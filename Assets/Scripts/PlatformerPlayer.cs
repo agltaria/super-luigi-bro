@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEditor.Animations;
+//using UnityEditor.Animations;
 using UnityEngine.InputSystem;
 using Blocks;
 using DefaultNamespace;
@@ -66,7 +66,7 @@ public class PlatformerPlayer : PlatformerPhysics
     [SerializeField] SpriteMask spriteMask;
 
     [Header("Animation Handling")]
-    [SerializeField] AnimatorController[] animators; // small, big, fire, star?
+    [SerializeField] RuntimeAnimatorController[] animators; // small, big, fire, star?
     [SerializeField] Sprite[] powerUpMushroomSprites;
     [SerializeField] Sprite[] powerUpFlowerSprites;
     float powerUpTimer;
