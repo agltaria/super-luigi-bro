@@ -66,7 +66,7 @@ public class PlatformerShell : PlatformerEnemy
             PlatformerEnemy enemy = hit.collider.gameObject.GetComponent<PlatformerEnemy>();
             enemy.OnDeath(false, CurrentDir);
         }
-        else if ((direction == 2 || direction == 3) && !(hit.collider.gameObject.tag == "Player"))
+        else if ((direction == 2 || direction == 3) && !(hit.collider.gameObject.tag == "Player") && !(hit.collider.gameObject.tag == "MainCamera"))
         {
 
             CurrentDir *= -1f;
