@@ -31,6 +31,12 @@ public class PlatformerShell : PlatformerEnemy
             Debug.Log("timer over");
             Destroy(this.gameObject);
         }
+
+        if (!spr.isVisible)
+        {
+            Destroy(this.gameObject);
+        }
+
     }
 
     void Start()
