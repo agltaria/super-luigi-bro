@@ -467,6 +467,7 @@ public class PlatformerPlayer : PlatformerPhysics
                 break;
             case 3: // One-Up mushroom
                 // Increment lives
+                // TODO TO DO Increment lives counter on lives manager or however it works
                 PlaySound(5);
                 break;
             default:
