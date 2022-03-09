@@ -44,6 +44,7 @@ namespace DefaultNamespace
         [ContextMenu("Die")]
         public void Die()
         {
+            Debug.Log("die");
             StartCoroutine(DeathSequence());
         }
 
