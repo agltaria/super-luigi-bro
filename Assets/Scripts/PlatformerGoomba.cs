@@ -11,6 +11,7 @@ public class PlatformerGoomba : PlatformerEnemy
         base.OnDeath(stomped, dir);
         if (stomped)
         {
+            //INSERT GOOMBA STOMP
             Speed = 0f;
 
             animator.SetBool("Stomped", stomped);

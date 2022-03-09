@@ -45,6 +45,9 @@ public class PlatformerPlayer : PlatformerPhysics
     Vector2 smallMarioColliderOffset = new Vector2(0.0f, -0.594f);
     BoxCollider2D collider;
 
+    [SerializeField] AudioClip[] audioClips; // 0 jump, 1 fireBall, 2 powerUp, 3 stomp, 4 pipe (take damage), 5 oneUp
+    AudioSource audioSource;
+
     Vector2 trueGravity;
     float velocityX;
     float currentMaxSpeed;
@@ -80,6 +83,7 @@ public class PlatformerPlayer : PlatformerPhysics
             jumpDown = true;
             velocity = new Vector2(velocity.x, jumpForce * (1.0f + (jumpSpeedInfluence * (Mathf.Abs(velocity.x) / (maxSpeed * runInfluence)))));
             gravity *= slowFallInfluence;
+            PlaySound(0);
         }
         else if (value.Get<float>() < 0.1f)
         {
@@ -102,6 +106,7 @@ public class PlatformerPlayer : PlatformerPhysics
         collider = GetComponent<BoxCollider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
         throwSpriteRenderer.enabled = false;
         spriteMask.enabled = false;
     }
@@ -335,6 +340,7 @@ public class PlatformerPlayer : PlatformerPhysics
     {
         if (throwCoolDown <= 0.0f)
         {
+            PlaySound(1);
             fireBalls--;
             spriteMask.enabled = true;
             throwSpriteRenderer.enabled = true;
@@ -354,6 +360,7 @@ public class PlatformerPlayer : PlatformerPhysics
             // Hurt enemy and bounce Mario
             enemy.OnDeath(true, 1);
             velocity = new Vector2(velocity.x, bounceForce);
+            PlaySound(3);
         }
         else if (enemy != null)
         {
@@ -380,9 +387,9 @@ public class PlatformerPlayer : PlatformerPhysics
                 {
                     // Nothing?
                 }
-                // Hurt Mario
                 else if ((int)CurrentForm > 0)
                 {
+                    // Hurt Mario
                     Time.timeScale = 0.0f;
                     CurrentForm = MarioForm.Small;
                     powerUpStage = 0;
@@ -394,6 +401,7 @@ public class PlatformerPlayer : PlatformerPhysics
                     spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
                     isVulnerable = true;
                     vulnerabilityTimer = 2.0f;
+                    PlaySound(4, true);
                 }
                 else
                 {
@@ -425,6 +433,7 @@ public class PlatformerPlayer : PlatformerPhysics
                     animator.enabled = false;
                     collider.offset = bigMarioColliderOffset;
                     collider.size = bigMarioColliderScale;
+                    PlaySound(2);
                 }
                 else
                 {
@@ -443,6 +452,7 @@ public class PlatformerPlayer : PlatformerPhysics
                     animator.enabled = false;
                     collider.offset = bigMarioColliderOffset;
                     collider.size = bigMarioColliderScale;
+                    PlaySound(2);
                 }
                 else
                 {
@@ -453,22 +463,46 @@ public class PlatformerPlayer : PlatformerPhysics
                 // Make call to music player to play invincibility music
                 invincibilityTimer = 9.0f;
                 isInvincible = true;
+                PlaySound(2);
                 break;
             case 3: // One-Up mushroom
                 // Increment lives
+                // TODO TO DO Increment lives counter on lives manager or however it works
+                PlaySound(5);
                 break;
             default:
                 break;
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
         PowerUpInfo powerUp = collision.gameObject.GetComponent<PowerUpInfo>();
         if (powerUp != null)
         {
             GetPowerUp((int)powerUp.powerUpType);
             Destroy(powerUp.gameObject);
+        }
+    }
+
+    void PlaySound(int index)
+    {
+        if (index < audioClips.Length)
+        {
+            audioSource.pitch = 1.0f;
+            audioSource.clip = audioClips[index];
+            audioSource.Play();
+        }
+    }
+
+    void PlaySound(int index, bool shiftPitch)
+    {
+        if (index < audioClips.Length)
+        {
+            if (true) audioSource.pitch = 1.5f;
+            else audioSource.pitch = 1.0f;
+            audioSource.clip = audioClips[index];
+            audioSource.Play();
         }
     }
 }
